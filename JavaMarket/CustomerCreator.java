@@ -14,6 +14,23 @@ public class CustomerCreator extends Customer {
 		
 	}
 	
+	public void Simulator() {
+		
+	}
 	
+	public void size() {
+		
+	}
 	
+	public void enqueue() {
+		
+	}
+	
+	public void frontPeek() {
+		
+	}
+	
+	public void rearPeek() {
+		
+	}
 }

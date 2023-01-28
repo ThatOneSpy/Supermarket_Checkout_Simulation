@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="JavaMarket.CustomerCreator" project="CSC223-Ardvarks" 
     file="/CSC223-Ardvarks/JavaMarket/CustomerCreator.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="119" width="241" x="171" y="187"/>    
+    <position height="196" width="241" x="122" y="156"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="JavaMarket.NodeAndLinkedList" project="CSC223-Ardvarks" 
     file="/CSC223-Ardvarks/JavaMarket/NodeAndLinkedList.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="131" width="163" x="554" y="511"/>    
+    <position height="131" width="163" x="517" y="485"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
