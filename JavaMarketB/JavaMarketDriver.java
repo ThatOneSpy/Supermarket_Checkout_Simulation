@@ -27,7 +27,9 @@ public class JavaMarketDriver {
 		// of. Service time begins when they reach the front of the queue. Turnaround
 		// time is the total time that the customer waited and was served combined.
 
-		// Figure out how to calculate wait time.
+		// Figure out how to calculate wait time. Take the first person in the queue,
+		// figure out their service time. Take the next person and their interarrival
+		// time.
 
 		// Keep track of time where checkouts are not being used. This needs to be
 		// minimized.

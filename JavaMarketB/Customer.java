@@ -1,4 +1,4 @@
-package LineSimExample;
+package JavaMarketB;
 
 import java.util.*;
 
@@ -8,16 +8,10 @@ public class Customer {
 
 	private int serviceTime; // 1, 2, or 3 minutes
 
-	private int leaveTime; // the minute in the simulation when the customer leaves
-
-	private int waitTime; // total time spent waiting before being served
-
 	public Customer() // default constructor
 	{
 		arrivalTime = 0;
 		serviceTime = 0;
-		leaveTime = 0;
-		waitTime = 0;
 	}
 
 	public Customer(int arrTime) // one argument constructor
@@ -25,8 +19,6 @@ public class Customer {
 		arrivalTime = arrTime;
 		Random rand = new Random();
 		serviceTime = rand.nextInt(3) + 1; // 1, 2, or 3 minutes
-		leaveTime = arrTime + serviceTime;
-		waitTime = 0;
 	}
 
 	public void setArrivalTime(int arrTime) {
@@ -44,21 +36,4 @@ public class Customer {
 	public int getServiceTime() {
 		return serviceTime;
 	}
-
-	public int getLeaveTime() {
-		return leaveTime;
-	}
-
-	public void setLeaveTime(int leaveTime) {
-		this.leaveTime = leaveTime;
-	}
-
-	public int getWaitTime() {
-		return waitTime;
-	}
-
-	public void setWaitTime(int waitTime) {
-		this.waitTime = waitTime;
-	}
-
 }
