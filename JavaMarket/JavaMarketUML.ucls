@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="JavaMarket.Customer" project="CSC223-Ardvarks" 
     file="/CSC223-Ardvarks/JavaMarket/Customer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="345" width="285" x="504" y="107"/>    
+    <position height="345" width="285" x="490" y="40"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="JavaMarket.CustomerCreator" project="CSC223-Ardvarks" 
     file="/CSC223-Ardvarks/JavaMarket/CustomerCreator.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="196" width="241" x="122" y="156"/>    
+    <position height="196" width="241" x="142" y="104"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -40,10 +40,10 @@
   <association id="5">    
     <end type="SOURCE" refId="2" navigable="false">      
       <attribute id="6" name="customer">        
-        <position height="0" width="0" x="59" y="-71"/>      
+        <position height="0" width="0" x="45" y="-138"/>      
       </attribute>      
       <multiplicity id="7" minimum="0" maximum="1">        
-        <position height="0" width="0" x="59" y="-71"/>      
+        <position height="0" width="0" x="45" y="-138"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    

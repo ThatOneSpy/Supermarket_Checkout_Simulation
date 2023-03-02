@@ -12,6 +12,7 @@ public class Customer {
 
 	private int waitTime; // total time spent waiting before being served
 
+	
 	public Customer() // default constructor
 	{
 		arrivalTime = 0;
@@ -61,4 +62,6 @@ public class Customer {
 		this.waitTime = waitTime;
 	}
 
+	
+	
 }
