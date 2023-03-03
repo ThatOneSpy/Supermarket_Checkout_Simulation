@@ -1,5 +1,6 @@
 package JavaMarketB;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
@@ -188,7 +189,7 @@ public class JavaMarketDriver {
 	 * @return true if the remove succeeded, false otherwise.
 	 */
 
-	public boolean remove(String element) {
+	public boolean remove(Customer element) {
 		if (isEmpty())
 			return false;
 
@@ -239,8 +240,14 @@ public class JavaMarketDriver {
 		LinkedList<Integer> queueB = new LinkedList<>();
 		LinkedList<Integer> queueC = new LinkedList<>();
 
+		// ArrayList to keep track of Customer wait times
+		ArrayList<Integer> waits = new ArrayList<>();
+
 		// Clock variable to determine arrival time for Customer constructor
 		int clock = 0;
+		int aEmpty = 0;
+		int bEmpty = 0;
+		int cEmpty = 0;
 
 		// Need at least one customer for basis
 		int aAT = genArrivalTime(minArrivalTime, maxArrivalTime);
@@ -248,8 +255,29 @@ public class JavaMarketDriver {
 		clock = clock + aAT;
 		Customer a = new Customer(clock, aST);
 
-		// Use a for loop to go through all customers (make sure to subtract one from
-		// numCustomers because we have a basis)
+		numCustomers--;
+		if (numCustomers == 0) {
+			clock = a.getFinishTime();
+			System.out.println("Average wait: 0");
+			System.out.println("Total time checkouts were not in use: 0 minutes");
+			System.out.println("Customer satisfaction: 1 satisfied (<5 minutes)  0 dissatisfied (>=5 minutes)");
+
+		} else {
+			Customer b = new Customer();
+			// Use a for loop to go through all customers (make sure to subtract one from
+			// numCustomers because we have a basis)
+			for (int i = 0; i < numCustomers; i++) {
+				if (queueA.isEmpty() || (queueA.size() < queueB.size() && queueA.size() < queueC.size())) {
+
+				} else if (queueB.isEmpty() || (queueB.size() < queueA.size() && queueB.size() < queueC.size())) {
+
+				} else if (queueC.isEmpty() || (queueC.size() < queueA.size() && queueC.size() < queueB.size())) {
+
+				} else {
+
+				}
+			}
+		}
 
 		// Requirements: three full service queues labeled A, B, C
 		// Arrival and service times are randomly generated within a given range
@@ -262,13 +290,13 @@ public class JavaMarketDriver {
 		// then the person joins the queue in alphabetical order
 
 		// Required time data for each customer
-		// a. the clock time when the customer arrives at the queue
-		// b. the clock time when the customer is served
-		// c. the clock time when the customer leaves
+		// a. the clock time when the customer arrives at the queue(arrivalTime)
+		// b. the clock time when the customer is served (finishTime-serviceTime in
+		// blueprint)
+		// c. the clock time when the customer leaves(finishTime)
 
 		// The program must remember the wait time of that customer even after they
-		// leave (possibly use an array or an ArrayList?), which is clock time when they
-		// get served minus the clock time when they leave
+		// leave (possibly use an array or an ArrayList?)
 
 		// Customers also have a wait time and a service time that must be kept track
 		// of. Service time begins when they reach the front of the queue. Turnaround
@@ -276,7 +304,7 @@ public class JavaMarketDriver {
 
 		// Figure out how to calculate wait time. Take the first person in the queue,
 		// figure out their service time. Take the next person and their interarrival
-		// time.
+		// time. DONE
 
 		// Keep track of time where checkouts are not being used. This needs to be
 		// minimized.
