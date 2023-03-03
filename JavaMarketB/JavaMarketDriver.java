@@ -339,13 +339,13 @@ public class JavaMarketDriver {
 
 	// Generates an arrival time given the two range parameters determined by user
 	public static int genArrivalTime(int min, int max) {
-		int r = (int) (Math.random()) * (max - min) + min;
+		int r = (int) (Math.random() * (max - min)) + min;
 		return r;
 	}
 
 	// Generates a service time given the two range parameters determined by user
 	public static int genServiceTime(int min, int max) {
-		int r = (int) (Math.random()) * (max - min) + min;
+		int r = (int) (Math.random() * (max - min)) + min;
 		return r;
 	}
 
