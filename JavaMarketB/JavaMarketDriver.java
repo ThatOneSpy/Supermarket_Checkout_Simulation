@@ -8,6 +8,9 @@ import JavaMarketB.Customer;
 
 public class JavaMarketDriver {
 
+	
+	
+	
 	private class Node {
 		Customer value;
 		Node next;
@@ -222,6 +225,10 @@ public class JavaMarketDriver {
 
 	public static void main(String[] args) {
 
+		LinkedList<Customer> queueA = new LinkedList<>();
+		LinkedList<Customer> queueB = new LinkedList<>();
+		LinkedList<Customer> queueC = new LinkedList<>();
+		
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Enter minimum arrival time between customers:");
 		int minArrivalTime = scan.nextInt();
@@ -235,9 +242,7 @@ public class JavaMarketDriver {
 		int numCustomers = scan.nextInt();
 
 		// Initialize queues
-		LinkedList<Integer> queueA = new LinkedList<>();
-		LinkedList<Integer> queueB = new LinkedList<>();
-		LinkedList<Integer> queueC = new LinkedList<>();
+		
 
 		// Clock variable to determine arrival time for Customer constructor
 		int clock = 0;
@@ -248,6 +253,15 @@ public class JavaMarketDriver {
 		clock = clock + aAT;
 		Customer a = new Customer(clock, aST);
 
+		Customer customer = new Customer(aAT, aST);
+		serveCustomer(queueA, clock);
+		
+		
+		
+		
+		
+		
+		
 		// Use a for loop to go through all customers (make sure to subtract one from
 		// numCustomers because we have a basis)
 
@@ -303,4 +317,23 @@ public class JavaMarketDriver {
 		return wait;
 	}
 
+	
+	public static void serveCustomer(LinkedList<Customer> queue, int clock) {
+		
+	    if (!queue.isEmpty()) {
+	        Customer customer = queue.element(); // get the first customer in the queue
+	        if (customer.getServiceTime() == -1) { // if the customer has not been served yet
+	            customer.setServiceTime(clock); // set the service start time to the current clock time
+	            int serviceTime = customer.getServiceTime(); // get the customer's service time
+	            customer.setFinishTime(clock + serviceTime); // set the service end time to the current clock time plus the service time
+	        }
+	        if (customer.getFinishTime() == clock) { // if the customer has finished being served
+	            queue.remove(); // remove the customer from the queue
+	        }
+	    }
+	}
+	
+	
+	
+	
 }

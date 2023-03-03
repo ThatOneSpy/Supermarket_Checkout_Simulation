@@ -58,4 +58,8 @@ public class Customer {
 	public void setFinishTime(int finishTime) {
 		this.finishTime = finishTime;
 	}
+	
+	
+	
 }
+
