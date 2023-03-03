@@ -270,7 +270,7 @@ public class JavaMarketDriver {
 				int bAT = genArrivalTime(minArrivalTime, maxArrivalTime);
 				int bST = genServiceTime(minServiceTime, maxServiceTime);
 				clock = clock + bAT;
-				int bWait = getWait(a, clock);
+				int bWait = getWait(a);
 				waits.add(bWait);
 				b = new Customer(clock, bST, bWait);
 				System.out.println(b.toString());
@@ -351,9 +351,10 @@ public class JavaMarketDriver {
 
 	// Generates the wait time of a single customer given that there has been at
 	// least one customer served before them
-	public static int getWait(Customer a, int arTime) {
+	public static int getWait(Customer a) {
 		int finish = a.getFinishTime();
-		int wait = finish - arTime;
+		int wait = finish - a.getArrivalTime();
+
 		return wait;
 	}
 
@@ -361,8 +362,11 @@ public class JavaMarketDriver {
 		int sum = 0;
 		for (int i = 0; i < wait.size(); i++) {
 			sum = sum + wait.get(i);
+
 		}
+
 		return (sum / numCustomers);
+
 	}
 
 	public static void serveCustomer(LinkedList<Customer> queue, int clock) {
