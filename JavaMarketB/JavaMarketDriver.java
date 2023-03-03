@@ -1,11 +1,8 @@
 package JavaMarketB;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
-
-import JavaMarketB.Customer;
 
 public class JavaMarketDriver {
 
@@ -242,13 +239,10 @@ public class JavaMarketDriver {
 		// Initialize queues
 
 		// ArrayList to keep track of Customer wait times
-		ArrayList<Integer> waits = new ArrayList<>();
+		int[] waits = null;
 
 		// Clock variable to determine arrival time for Customer constructor
 		int clock = 0;
-		int aEmpty = 0;
-		int bEmpty = 0;
-		int cEmpty = 0;
 
 		// Need at least one customer for basis
 		int aAT = genArrivalTime(minArrivalTime, maxArrivalTime);
@@ -264,19 +258,28 @@ public class JavaMarketDriver {
 			System.out.println("Customer satisfaction: 1 satisfied (<5 minutes)  0 dissatisfied (>=5 minutes)");
 
 		} else {
-			Customer b = new Customer();
+			queueA.add(a);
+			waits[0] = 0;
+			Customer b;
 			// Use a for loop to go through all customers (make sure to subtract one from
 			// numCustomers because we have a basis)
 			for (int i = 0; i < numCustomers; i++) {
+				int bAT = genArrivalTime(minArrivalTime, maxArrivalTime);
+				int bST = genServiceTime(minServiceTime, maxServiceTime);
+				clock = clock + bAT;
+				int bWait = getWait(a, clock);
+				waits[i + 1] = bWait;
+				b = new Customer(clock, bST, bWait);
 				if (queueA.isEmpty() || (queueA.size() < queueB.size() && queueA.size() < queueC.size())) {
-
+					queueA.add(b);
 				} else if (queueB.isEmpty() || (queueB.size() < queueA.size() && queueB.size() < queueC.size())) {
-
+					queueB.add(b);
 				} else if (queueC.isEmpty() || (queueC.size() < queueA.size() && queueC.size() < queueB.size())) {
-
+					queueC.add(b);
 				} else {
-
+					queueA.add(b);
 				}
+				a = b;
 			}
 		}
 		Customer customer = new Customer(aAT, aST);
@@ -335,6 +338,14 @@ public class JavaMarketDriver {
 		int finish = a.getFinishTime();
 		int wait = finish - arTime;
 		return wait;
+	}
+
+	public static double waitAvg(int[] wait, int numCustomers) {
+		int sum = 0;
+		for (int i = 0; i < wait.length; i++) {
+			sum = sum + wait[i];
+		}
+		return (sum / numCustomers);
 	}
 
 	public static void serveCustomer(LinkedList<Customer> queue, int clock) {
