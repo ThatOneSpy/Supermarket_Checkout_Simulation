@@ -1,5 +1,6 @@
 package JavaMarketB;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
@@ -239,7 +240,7 @@ public class JavaMarketDriver {
 		// Initialize queues
 
 		// ArrayList to keep track of Customer wait times
-		int[] waits = null;
+		ArrayList<Integer> waits = new ArrayList<>();
 
 		// Clock variable to determine arrival time for Customer constructor
 		int clock = 0;
@@ -253,13 +254,15 @@ public class JavaMarketDriver {
 		numCustomers--;
 		if (numCustomers == 0) {
 			clock = a.getFinishTime();
+			System.out.println(a.toString());
 			System.out.println("Average wait: 0");
 			System.out.println("Total time checkouts were not in use: 0 minutes");
 			System.out.println("Customer satisfaction: 1 satisfied (<5 minutes)  0 dissatisfied (>=5 minutes)");
 
 		} else {
 			queueA.add(a);
-			waits[0] = 0;
+			waits.add(0);
+			System.out.println(a.toString());
 			Customer b;
 			// Use a for loop to go through all customers (make sure to subtract one from
 			// numCustomers because we have a basis)
@@ -268,8 +271,9 @@ public class JavaMarketDriver {
 				int bST = genServiceTime(minServiceTime, maxServiceTime);
 				clock = clock + bAT;
 				int bWait = getWait(a, clock);
-				waits[i + 1] = bWait;
+				waits.add(bWait);
 				b = new Customer(clock, bST, bWait);
+				System.out.println(b.toString());
 				if (queueA.isEmpty() || (queueA.size() < queueB.size() && queueA.size() < queueC.size())) {
 					queueA.add(b);
 				} else if (queueB.isEmpty() || (queueB.size() < queueA.size() && queueB.size() < queueC.size())) {
@@ -281,6 +285,19 @@ public class JavaMarketDriver {
 				}
 				a = b;
 			}
+			int satisfied = 0;
+			int dissatisfied = 0;
+			for (int i = 0; i < waits.size(); i++) {
+				if (waits.get(i) >= 5) {
+					dissatisfied++;
+				} else {
+					satisfied++;
+				}
+			}
+			System.out.println("Average wait: " + waitAvg(waits, (numCustomers + 1)));
+			System.out.println("Total time checkouts were not in use: ");
+			System.out.println("Customer satisfaction: " + satisfied + " satisfied (<5 minutes)  " + dissatisfied
+					+ " dissatisfied (>=5 minutes)");
 		}
 		Customer customer = new Customer(aAT, aST);
 		serveCustomer(queueA, clock);
@@ -340,10 +357,10 @@ public class JavaMarketDriver {
 		return wait;
 	}
 
-	public static double waitAvg(int[] wait, int numCustomers) {
+	public static double waitAvg(ArrayList<Integer> wait, int numCustomers) {
 		int sum = 0;
-		for (int i = 0; i < wait.length; i++) {
-			sum = sum + wait[i];
+		for (int i = 0; i < wait.size(); i++) {
+			sum = sum + wait.get(i);
 		}
 		return (sum / numCustomers);
 	}
