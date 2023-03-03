@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-import LineSimExample.Customer;
+import JavaMarketB.Customer;
 
 public class JavaMarketDriver {
 
@@ -239,6 +239,18 @@ public class JavaMarketDriver {
 		LinkedList<Integer> queueB = new LinkedList<>();
 		LinkedList<Integer> queueC = new LinkedList<>();
 
+		// Clock variable to determine arrival time for Customer constructor
+		int clock = 0;
+
+		// Need at least one customer for basis
+		int aAT = genArrivalTime(minArrivalTime, maxArrivalTime);
+		int aST = genServiceTime(minServiceTime, maxServiceTime);
+		clock = clock + aAT;
+		Customer a = new Customer(clock, aST);
+
+		// Use a for loop to go through all customers (make sure to subtract one from
+		// numCustomers because we have a basis)
+
 		// Requirements: three full service queues labeled A, B, C
 		// Arrival and service times are randomly generated within a given range
 		// Ranges are determined by user input, but we suggest ranges that worked best
@@ -272,21 +284,21 @@ public class JavaMarketDriver {
 	}
 
 	// Generates an arrival time given the two range parameters determined by user
-	public int genArrivalTime(int min, int max) {
+	public static int genArrivalTime(int min, int max) {
 		int r = (int) (Math.random()) * (max - min) + min;
 		return r;
 	}
 
 	// Generates a service time given the two range parameters determined by user
-	public int genServiceTime(int min, int max) {
+	public static int genServiceTime(int min, int max) {
 		int r = (int) (Math.random()) * (max - min) + min;
 		return r;
 	}
 
 	// Generates the wait time of a single customer given that there has been at
 	// least one customer served before them
-	public int getWait(Customer a, int arTime) {
-		int finish = a.getLeaveTime();
+	public static int getWait(Customer a, int arTime) {
+		int finish = a.getFinishTime();
 		int wait = finish - arTime;
 		return wait;
 	}
