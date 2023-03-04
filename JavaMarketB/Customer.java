@@ -71,4 +71,20 @@ public class Customer {
 		this.finishTime = finishTime;
 	}
 
+	public int getServeTime() {
+		return serveTime;
+	}
+
+	public void setServeTime(int serveTime) {
+		this.serveTime = serveTime;
+	}
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
 }
