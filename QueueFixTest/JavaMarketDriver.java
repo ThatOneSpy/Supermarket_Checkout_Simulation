@@ -1,7 +1,6 @@
 package QueueFixTest;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -225,37 +224,16 @@ public class JavaMarketDriver {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 
-		System.out.println("Welcome to the Java Market Checkout Simulator.");
-		System.out.println(
-				"To get started, please enter some endpoints for ranges that will calculate interarrival time, service time for each customer, and number of customers to serve.");
-		System.out.println("WARNING: Please enter only positive integers in order for the program to run correctly.");
-
-		int minArrivalTime = 0;
-		int maxArrivalTime = 0;
-		int minServiceTime = 0;
-		int maxServiceTime = 0;
-		int numCustomers = 0;
-
-		try {
-			System.out.print("Enter minimum arrival time between customers:");
-			minArrivalTime = scan.nextInt();
-			System.out.print("Enter maximum arrival time between customers:");
-			maxArrivalTime = scan.nextInt();
-			System.out.print("Enter minimum service time:");
-			minServiceTime = scan.nextInt();
-			System.out.print("Enter maximum service time:");
-			maxServiceTime = scan.nextInt();
-			System.out.print("Enter number of customers to serve:");
-			numCustomers = scan.nextInt();
-			if (minArrivalTime < 0 || maxArrivalTime < 0 || minServiceTime < 0 || maxServiceTime < 0
-					|| numCustomers <= 0) {
-				System.out.println("Invalid input was entered. Program will close.");
-				System.exit(0);
-			}
-		} catch (InputMismatchException ime) {
-			System.out.println("Input Mismatch Exception. You did not enter an integer. Program needs to exit.");
-			System.exit(0);
-		}
+		System.out.print("Enter minimum arrival time between customers:");
+		int minArrivalTime = scan.nextInt();
+		System.out.print("Enter maximum arrival time between customers:");
+		int maxArrivalTime = scan.nextInt();
+		System.out.print("Enter minimum service time:");
+		int minServiceTime = scan.nextInt();
+		System.out.print("Enter maximum service time:");
+		int maxServiceTime = scan.nextInt();
+		System.out.print("Enter number of customers to serve:");
+		int numCustomers = scan.nextInt();
 
 		// Initialize queues
 		LinkedList<Customer> queueA = new LinkedList<>();
@@ -445,8 +423,6 @@ public class JavaMarketDriver {
 			System.out.println("Average wait: " + waitAvg(waitList, (numCustomers + 1)));
 			System.out.println("Total time checkouts were not in use: " + noUse);
 			satisfactionCalc(waitList);
-
-			System.out.println("Simulation complete.");
 
 			scan.close();
 		}
