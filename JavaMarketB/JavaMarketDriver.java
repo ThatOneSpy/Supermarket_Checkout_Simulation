@@ -222,12 +222,8 @@ public class JavaMarketDriver {
 	static int noUse = 0;
 
 	public static void main(String[] args) {
-
-		LinkedList<Customer> queueA = new LinkedList<>();
-		LinkedList<Customer> queueB = new LinkedList<>();
-		LinkedList<Customer> queueC = new LinkedList<>();
-
 		Scanner scan = new Scanner(System.in);
+		
 		System.out.print("Enter minimum arrival time between customers:");
 		int minArrivalTime = scan.nextInt();
 		System.out.print("Enter maximum arrival time between customers:");
@@ -240,18 +236,21 @@ public class JavaMarketDriver {
 		int numCustomers = scan.nextInt();
 
 		// Initialize queues
-
+		LinkedList<Customer> queueA = new LinkedList<>();
+		LinkedList<Customer> queueB = new LinkedList<>();
+		LinkedList<Customer> queueC = new LinkedList<>();
+		
 		// ArrayList to keep track of Customer wait times
 		ArrayList<Integer> waitList = new ArrayList<>();
 
 		// Clock variable to determine arrival time for Customer constructor
-		int clock = 0;
+		int currentTime = 0;
 
 		// Need at least one customer for basis
 		int aAT = genArrivalTime(minArrivalTime, maxArrivalTime);
 		int aST = genServiceTime(minServiceTime, maxServiceTime);
-		clock = clock + aAT;
-		Customer a = new Customer(clock, aST);
+		currentTime = currentTime + aAT;
+		Customer a = new Customer(currentTime, aST);
 
 		numCustomers--;
 
@@ -259,7 +258,7 @@ public class JavaMarketDriver {
 		int turnaround;
 
 		if (numCustomers == 0) {
-			clock = a.getFinishTime();
+			currentTime = a.getFinishTime();
 			turnaround = getTurnaround(0, a.getServiceTime());
 			System.out.println(a.toString());
 			System.out.println("Average wait: 0");
@@ -269,7 +268,7 @@ public class JavaMarketDriver {
 		} else {
 			queueA.add(a);
 			if (!queueA.isEmpty()) {
-				serveCustomer(queueA, clock);
+				serveCustomer(queueA, currentTime);
 			}
 			turnaround = getTurnaround(0, a.getServiceTime());
 			waitList.add(0);
@@ -281,26 +280,26 @@ public class JavaMarketDriver {
 			for (int i = 0; i < numCustomers; i++) {
 				int bAT = genArrivalTime(minArrivalTime, maxArrivalTime);
 				int bST = genServiceTime(minServiceTime, maxServiceTime);
-				clock = clock + bAT;
-				int bWait = getWait(a, clock);
+				currentTime = currentTime + bAT;
+				int bWait = getWait(a, currentTime);
 				turnaround = getTurnaround(bWait, bST);
 				waitList.add(bWait);
-				b = new Customer(clock, bST, bWait);
+				b = new Customer(currentTime, bST, bWait);
 				System.out.println(b.toString());
 				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					queueA.add(b);
 					if (!queueA.isEmpty()) {
-						serveCustomer(queueA, clock);
+						serveCustomer(queueA, currentTime);
 					}
 				} else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
 					queueB.add(b);
 					if (!queueB.isEmpty()) {
-						serveCustomer(queueB, clock);
+						serveCustomer(queueB, currentTime);
 					}
 				} else {
 					queueC.add(b);
 					if (!queueC.isEmpty()) {
-						serveCustomer(queueC, clock);
+						serveCustomer(queueC, currentTime);
 					}
 				}
 				a = b;
