@@ -310,6 +310,38 @@ public class JavaMarketDriver {
 						System.out.println("Customer went into Queue B.");
 					}
 
+					// If the arrival time of the current arrival has the same finish time of
+					// another customer in another queue while all queues are filled
+					else if (!queueA.isEmpty() && !queueB.isEmpty()) {
+						if (currentTime == queueA.getFirst().getFinishTime()
+								|| currentTime == queueB.getFirst().getFinishTime()) {
+							// Serve all queues as long as they're not empty
+							if (!queueA.isEmpty()) {
+								serveCustomer(queueA);
+							}
+							if (!queueB.isEmpty()) {
+								serveCustomer(queueB);
+							}
+							if (!queueC.isEmpty()) {
+								serveCustomer(queueC);
+							}
+							// Then send the customer to the empty queue by priority
+							if (queueA.isEmpty()) {
+								b = new Customer(currentTime, bST, 0, 'A');
+								System.out.println(b.toString());
+								queueA.add(b);
+							} else if (queueB.isEmpty()) {
+								b = new Customer(currentTime, bST, 0, 'B');
+								System.out.println(b.toString());
+								queueB.add(b);
+							} else {
+								b = new Customer(currentTime, bST, 0, 'C');
+								System.out.println(b.toString());
+								queueC.add(b);
+							}
+						}
+					}
+
 					else {
 						if (!queueC.isEmpty()) {
 							serveCustomer(queueC);
@@ -324,6 +356,8 @@ public class JavaMarketDriver {
 				} else {
 
 					char cusQueue = a.getQueue();
+
+					// First serves customers in all queues
 					if (!queueA.isEmpty()) {
 						serveCustomer(queueA);
 					}
@@ -333,6 +367,9 @@ public class JavaMarketDriver {
 					if (!queueC.isEmpty()) {
 						serveCustomer(queueC);
 					}
+
+					// If any other queues are empty, otherwise send the customer to the queue to
+					// the one the previous customer just left
 					if (queueA.isEmpty()) {
 						b = new Customer(currentTime, bST, bWait, 'A');
 						System.out.println(b.toString());
@@ -353,23 +390,34 @@ public class JavaMarketDriver {
 							b = new Customer(currentTime, bST, bWait, cusQueue);
 							System.out.println(b.toString());
 							queueA.add(b);
-							System.out.println("Customer went into Queue A.");
 						} else if (cusQueue == 'B') {
 							if (!queueB.isEmpty()) {
 								serveCustomer(queueB);
 							}
+							b = new Customer(currentTime, bST, bWait, cusQueue);
+							System.out.println(b.toString());
 							queueB.add(b);
-							System.out.println("Customer went into Queue B.");
 						} else {
 							if (!queueC.isEmpty()) {
 								serveCustomer(queueC);
 							}
+							b = new Customer(currentTime, bST, bWait, cusQueue);
+							System.out.println(b.toString());
 							queueC.add(b);
-							System.out.println("Customer went into Queue C.");
 						}
 					}
 				}
 				a = b;
+			}
+
+			while (!queueA.isEmpty()) {
+				serveCustomer(queueA);
+			}
+			while (!queueB.isEmpty()) {
+				serveCustomer(queueB);
+			}
+			while (!queueC.isEmpty()) {
+				serveCustomer(queueC);
 			}
 
 			System.out.println("Average wait: " + waitAvg(waitList, (numCustomers + 1)));
