@@ -287,12 +287,21 @@ public class JavaMarketDriver {
 				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					queueA.add(b);
 					System.out.println("Customer went into queue A.");
+					if (!queueA.isEmpty()) {
+						serveCustomer(queueA, clock);
+					}
 				} else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
 					queueB.add(b);
 					System.out.println("Customer went into queue B.");
+					if (!queueB.isEmpty()) {
+						serveCustomer(queueB, clock);
+					}
 				} else {
 					queueC.add(b);
 					System.out.println("Customer went into queue C.");
+					if (!queueC.isEmpty()) {
+						serveCustomer(queueC, clock);
+					}
 				}
 				a = b;
 			}
@@ -310,8 +319,6 @@ public class JavaMarketDriver {
 			System.out.println("Customer satisfaction: " + satisfied + " satisfied (<5 minutes)  " + dissatisfied
 					+ " dissatisfied (>=5 minutes)");
 		}
-		Customer customer = new Customer(aAT, aST);
-		serveCustomer(queueA, clock);
 
 		// Use a for loop to go through all customers (make sure to subtract one from
 		// numCustomers because we have a basis)
