@@ -412,7 +412,7 @@ public class JavaMarketDriver {
 		}
 		customer.setServiceTime(customer.getServiceTime() - 1);
 
-		// Remove the customer from the queue if they have been served
+		// Remove the customer from the queue if they have been served..
 		if (customer.getServiceTime() == 0) {
 			queue.remove();
 		}
