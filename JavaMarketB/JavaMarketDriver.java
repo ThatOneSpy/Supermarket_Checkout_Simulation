@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-
 public class JavaMarketDriver {
 
 	private class Node {
@@ -275,6 +274,7 @@ public class JavaMarketDriver {
 			turnaround = getTurnaround(0, a.getServiceTime());
 			waits.add(0);
 			System.out.println(a.toString());
+			System.out.println("Went into Queue A.");
 			Customer b;
 			// Use a for loop to go through all customers (make sure to subtract one from
 			// numCustomers because we have a basis)
@@ -289,19 +289,19 @@ public class JavaMarketDriver {
 				System.out.println(b.toString());
 				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					queueA.add(b);
-
+					System.out.println("Went into Queue A.");
 					if (!queueA.isEmpty()) {
 						serveCustomer(queueA, clock);
 					}
 				} else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
 					queueB.add(b);
-
+					System.out.println("Went into Queue B.");
 					if (!queueB.isEmpty()) {
 						serveCustomer(queueB, clock);
 					}
 				} else {
 					queueC.add(b);
-
+					System.out.println("Went into Queue C.");
 					if (!queueC.isEmpty()) {
 						serveCustomer(queueC, clock);
 					}
@@ -405,17 +405,16 @@ public class JavaMarketDriver {
 
 	public static void serveCustomer(LinkedList<Customer> queue, int clock) {
 
-		if (!queue.isEmpty()) {
-			Customer customer = queue.element(); // get the first customer in the queue
-			if (customer.getServiceTime() == -1) { // if the customer has not been served yet
-				customer.setServiceTime(clock); // set the service start time to the current clock time
-				int serviceTime = customer.getServiceTime(); // get the customer's service time
-				customer.setFinishTime(clock + serviceTime); // set the service end time to the current clock time plus
-																// the service time
-			}
-			if (customer.getFinishTime() == clock) { // if the customer has finished being served
-				queue.remove(); // remove the customer from the queue
-			}
+		// Serve the first customer in the queue
+		Customer customer = queue.peek();
+		if (customer.getServiceTime() == -1) {
+			customer.setServiceTime(clock);
+		}
+		customer.setServiceTime(customer.getServiceTime() - 1);
+
+		// Remove the customer from the queue if they have been served
+		if (customer.getServiceTime() == 0) {
+			queue.remove();
 		}
 	}
 
