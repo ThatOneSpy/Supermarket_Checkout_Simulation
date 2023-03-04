@@ -219,6 +219,9 @@ public class JavaMarketDriver {
 		return true;
 	}
 
+	// Variable to keep track of time where checkouts aren't in use
+	static int noUse = 0;
+
 	public static void main(String[] args) {
 
 		LinkedList<Customer> queueA = new LinkedList<>();
@@ -270,18 +273,22 @@ public class JavaMarketDriver {
 				int bAT = genArrivalTime(minArrivalTime, maxArrivalTime);
 				int bST = genServiceTime(minServiceTime, maxServiceTime);
 				clock = clock + bAT;
-				int bWait = getWait(a);
+				int bWait = getWait(a, clock);
 				waits.add(bWait);
 				b = new Customer(clock, bST, bWait);
 				System.out.println(b.toString());
 				if (queueA.isEmpty() || (queueA.size() < queueB.size() && queueA.size() < queueC.size())) {
 					queueA.add(b);
+					System.out.println("Customer went into queue A.");
 				} else if (queueB.isEmpty() || (queueB.size() < queueA.size() && queueB.size() < queueC.size())) {
 					queueB.add(b);
+					System.out.println("Customer went into queue B.");
 				} else if (queueC.isEmpty() || (queueC.size() < queueA.size() && queueC.size() < queueB.size())) {
 					queueC.add(b);
+					System.out.println("Customer went into queue C.");
 				} else {
 					queueA.add(b);
+					System.out.println("Customer went into queue A.");
 				}
 				a = b;
 			}
@@ -295,7 +302,7 @@ public class JavaMarketDriver {
 				}
 			}
 			System.out.println("Average wait: " + waitAvg(waits, (numCustomers + 1)));
-			System.out.println("Total time checkouts were not in use: ");
+			System.out.println("Total time checkouts were not in use: " + noUse);
 			System.out.println("Customer satisfaction: " + satisfied + " satisfied (<5 minutes)  " + dissatisfied
 					+ " dissatisfied (>=5 minutes)");
 		}
@@ -351,11 +358,17 @@ public class JavaMarketDriver {
 
 	// Generates the wait time of a single customer given that there has been at
 	// least one customer served before them....
-	public static int getWait(Customer a) {
+	public static int getWait(Customer a, int cusBArrival) {
 		int finish = a.getFinishTime();
-		int wait = finish - a.getArrivalTime();
-
-		return wait;
+		int wait = finish - cusBArrival;
+		if (wait < 0) {
+			wait = (-wait);
+			noUse = noUse + wait;
+			wait = 0;
+			return wait;
+		} else {
+			return wait;
+		}
 	}
 
 	public static double waitAvg(ArrayList<Integer> wait, int numCustomers) {
