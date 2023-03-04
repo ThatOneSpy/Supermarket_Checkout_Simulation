@@ -403,19 +403,21 @@ public class JavaMarketDriver {
 		return turnaround;
 	}
 
-	public static void serveCustomer(LinkedList<Customer> queue, int clock) {
-
+	public static void serveCustomer(LinkedList<Customer> queue, int currentTime) {
 		// Serve the first customer in the queue
 		Customer customer = queue.peek();
 		if (customer.getServiceTime() == -1) {
-			customer.setServiceTime(clock);
+			customer.setServiceTime(currentTime);
 		}
 		customer.setServiceTime(customer.getServiceTime() - 1);
 
-		// Remove the customer from the queue if they have been served..
+		// Remove the customer from the queue if they have been served
 		if (customer.getServiceTime() == 0) {
+			
+			System.out.println("\nCustomer" + customer.getCustomerId() + " has been removed at time " + customer.getFinishTime() + "\n");
+			
 			queue.remove();
+
 		}
 	}
-
 }
