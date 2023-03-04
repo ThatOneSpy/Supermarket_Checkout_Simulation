@@ -2,8 +2,8 @@ package JavaMarketB;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
+
 
 public class JavaMarketDriver {
 
@@ -269,6 +269,9 @@ public class JavaMarketDriver {
 
 		} else {
 			queueA.add(a);
+			if (!queueA.isEmpty()) {
+				serveCustomer(queueA, clock);
+			}
 			turnaround = getTurnaround(0, a.getServiceTime());
 			waits.add(0);
 			System.out.println(a.toString());
@@ -286,19 +289,19 @@ public class JavaMarketDriver {
 				System.out.println(b.toString());
 				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					queueA.add(b);
-					System.out.println("Customer went into queue A.");
+
 					if (!queueA.isEmpty()) {
 						serveCustomer(queueA, clock);
 					}
 				} else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
 					queueB.add(b);
-					System.out.println("Customer went into queue B.");
+
 					if (!queueB.isEmpty()) {
 						serveCustomer(queueB, clock);
 					}
 				} else {
 					queueC.add(b);
-					System.out.println("Customer went into queue C.");
+
 					if (!queueC.isEmpty()) {
 						serveCustomer(queueC, clock);
 					}
