@@ -277,18 +277,15 @@ public class JavaMarketDriver {
 				waits.add(bWait);
 				b = new Customer(clock, bST, bWait);
 				System.out.println(b.toString());
-				if (queueA.isEmpty() || (queueA.size() < queueB.size() && queueA.size() < queueC.size())) {
+				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					queueA.add(b);
 					System.out.println("Customer went into queue A.");
-				} else if (queueB.isEmpty() || (queueB.size() < queueA.size() && queueB.size() < queueC.size())) {
+				} else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
 					queueB.add(b);
 					System.out.println("Customer went into queue B.");
-				} else if (queueC.isEmpty() || (queueC.size() < queueA.size() && queueC.size() < queueB.size())) {
+				} else {
 					queueC.add(b);
 					System.out.println("Customer went into queue C.");
-				} else {
-					queueA.add(b);
-					System.out.println("Customer went into queue A.");
 				}
 				a = b;
 			}
