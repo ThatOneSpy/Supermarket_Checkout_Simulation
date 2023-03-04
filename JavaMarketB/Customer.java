@@ -10,7 +10,9 @@ public class Customer {
 
 	private int serveTime; // When the customer is served in clock time
 
-	private int id = 000;
+	private int customerId;
+
+	private static int idCounter = 0;
 
 	public Customer() // default constructor
 	{
@@ -18,7 +20,7 @@ public class Customer {
 		serviceTime = 0;
 		finishTime = 0;
 		serveTime = 0;
-		id++;
+		customerId = ++idCounter;
 	}
 
 	public Customer(int arrTime, int serTime) // Constructor takes in the very first customer or a customer with no wait
@@ -28,7 +30,7 @@ public class Customer {
 		serviceTime = serTime;
 		finishTime = arrTime + serTime;
 		serveTime = finishTime - serTime;
-		id++;
+		customerId = ++idCounter;
 	}
 
 	public Customer(int arrTime, int serTime, int wait) { // Constructor takes in any other customer with a wait time
@@ -37,11 +39,11 @@ public class Customer {
 		serviceTime = serTime;
 		finishTime = arrTime + serTime + wait;
 		serveTime = finishTime - serTime;
-		id++;
+		customerId = ++idCounter;
 	}
 
 	public String toString() {
-		return "Customer " + id + " arrived at time " + arrivalTime + ", was served at time " + serveTime
+		return "Customer " + customerId + " arrived at time " + arrivalTime + ", was served at time " + serveTime
 				+ " with a total service time of " + serviceTime + " minutes, and left at time " + finishTime + ".";
 	}
 
