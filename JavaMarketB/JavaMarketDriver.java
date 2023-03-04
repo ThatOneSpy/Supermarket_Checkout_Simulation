@@ -350,7 +350,7 @@ public class JavaMarketDriver {
 	}
 
 	// Generates the wait time of a single customer given that there has been at
-	// least one customer served before them
+	// least one customer served before them....
 	public static int getWait(Customer a) {
 		int finish = a.getFinishTime();
 		int wait = finish - a.getArrivalTime();
