@@ -8,6 +8,8 @@ public class Customer {
 
 	private int finishTime;
 
+	private int serveTime; // When the customer is served in clock time
+
 	private int id = 000;
 
 	public Customer() // default constructor
@@ -15,6 +17,7 @@ public class Customer {
 		arrivalTime = 0;
 		serviceTime = 0;
 		finishTime = 0;
+		serveTime = 0;
 		id++;
 	}
 
@@ -24,6 +27,7 @@ public class Customer {
 		arrivalTime = arrTime;
 		serviceTime = serTime;
 		finishTime = arrTime + serTime;
+		serveTime = finishTime - serTime;
 		id++;
 	}
 
@@ -32,12 +36,13 @@ public class Customer {
 		arrivalTime = arrTime;
 		serviceTime = serTime;
 		finishTime = arrTime + serTime + wait;
+		serveTime = finishTime - serTime;
 		id++;
 	}
 
 	public String toString() {
-		return "Customer " + id + " arrived at time " + arrivalTime + " with a total service time of " + serviceTime
-				+ " minutes and left at time " + finishTime + ".";
+		return "Customer " + id + " arrived at time " + arrivalTime + ", was served at time " + serveTime
+				+ " with a total service time of " + serviceTime + " minutes, and left at time " + finishTime + ".";
 	}
 
 	public void setArrivalTime(int arrTime) {

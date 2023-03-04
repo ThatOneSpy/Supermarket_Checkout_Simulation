@@ -318,6 +318,8 @@ public class JavaMarketDriver {
 			System.out.println("Total time checkouts were not in use: " + noUse);
 			System.out.println("Customer satisfaction: " + satisfied + " satisfied (<5 minutes)  " + dissatisfied
 					+ " dissatisfied (>=5 minutes)");
+
+			scan.close();
 		}
 
 		// Use a for loop to go through all customers (make sure to subtract one from
@@ -337,14 +339,14 @@ public class JavaMarketDriver {
 		// a. the clock time when the customer arrives at the queue(arrivalTime)
 		// b. the clock time when the customer is served (finishTime-serviceTime in
 		// blueprint)
-		// c. the clock time when the customer leaves(finishTime)
+		// c. the clock time when the customer leaves(finishTime) DONE
 
 		// The program must remember the wait time of that customer even after they
 		// leave (possibly use an array or an ArrayList?) DONE
 
 		// Customers also have a wait time and a service time that must be kept track
 		// of. Service time begins when they reach the front of the queue. Turnaround
-		// time is the total time that the customer waited and was served combined.
+		// time is the total time that the customer waited and was served combined. DONE
 
 		// Figure out how to calculate wait time. Take the first person in the queue,
 		// figure out their service time. Take the next person and their interarrival
