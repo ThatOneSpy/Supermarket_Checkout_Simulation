@@ -242,7 +242,7 @@ public class JavaMarketDriver {
 		// Initialize queues
 
 		// ArrayList to keep track of Customer wait times
-		ArrayList<Integer> waits = new ArrayList<>();
+		ArrayList<Integer> waitList = new ArrayList<>();
 
 		// Clock variable to determine arrival time for Customer constructor
 		int clock = 0;
@@ -272,7 +272,7 @@ public class JavaMarketDriver {
 				serveCustomer(queueA, clock);
 			}
 			turnaround = getTurnaround(0, a.getServiceTime());
-			waits.add(0);
+			waitList.add(0);
 			System.out.println(a.toString());
 			System.out.println("Went into Queue A.");
 			Customer b;
@@ -284,24 +284,21 @@ public class JavaMarketDriver {
 				clock = clock + bAT;
 				int bWait = getWait(a, clock);
 				turnaround = getTurnaround(bWait, bST);
-				waits.add(bWait);
+				waitList.add(bWait);
 				b = new Customer(clock, bST, bWait);
 				System.out.println(b.toString());
 				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					queueA.add(b);
-					System.out.println("Went into Queue A.");
 					if (!queueA.isEmpty()) {
 						serveCustomer(queueA, clock);
 					}
 				} else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
 					queueB.add(b);
-					System.out.println("Went into Queue B.");
 					if (!queueB.isEmpty()) {
 						serveCustomer(queueB, clock);
 					}
 				} else {
 					queueC.add(b);
-					System.out.println("Went into Queue C.");
 					if (!queueC.isEmpty()) {
 						serveCustomer(queueC, clock);
 					}
@@ -310,14 +307,14 @@ public class JavaMarketDriver {
 			}
 			int satisfied = 0;
 			int dissatisfied = 0;
-			for (int i = 0; i < waits.size(); i++) {
-				if (waits.get(i) >= 5) {
+			for (int i = 0; i < waitList.size(); i++) {
+				if (waitList.get(i) >= 5) {
 					dissatisfied++;
 				} else {
 					satisfied++;
 				}
 			}
-			System.out.println("Average wait: " + waitAvg(waits, (numCustomers + 1)));
+			System.out.println("Average wait: " + waitAvg(waitList, (numCustomers + 1)));
 			System.out.println("Total time checkouts were not in use: " + noUse);
 			System.out.println("Customer satisfaction: " + satisfied + " satisfied (<5 minutes)  " + dissatisfied
 					+ " dissatisfied (>=5 minutes)");
@@ -405,7 +402,7 @@ public class JavaMarketDriver {
 
 	public static void serveCustomer(LinkedList<Customer> queue, int currentTime) {
 		// Serve the first customer in the queue
-		Customer customer = queue.peek();
+		Customer customer = queue.getFirst();
 		if (customer.getServiceTime() == -1) {
 			customer.setServiceTime(currentTime);
 		}
@@ -414,9 +411,8 @@ public class JavaMarketDriver {
 		// Remove the customer from the queue if they have been served
 		if (customer.getServiceTime() == 0) {
 			
-			System.out.println("\nCustomer" + customer.getCustomerId() + " has been removed at time " + customer.getFinishTime() + "\n");
-			
 			queue.remove();
+			System.out.println("\nCustomer" + customer.getCustomerId() + " has been removed at time " + customer.getFinishTime() + "\n");
 
 		}
 	}
