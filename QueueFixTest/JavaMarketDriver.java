@@ -228,7 +228,7 @@ public class JavaMarketDriver {
 		System.out.println("Welcome to the Java Market Checkout Simulator.");
 		System.out.println(
 				"To get started, please enter some endpoints for ranges that will calculate interarrival time, service time for each customer, and number of customers to serve.");
-		System.out.println("WARNING: Please enter only positive integers in order for the program to run correctly.\n");
+		System.out.println("WARNING: Please enter only positive integers in order for the program to run correctly.");
 
 		int minArrivalTime = 0;
 		int maxArrivalTime = 0;
@@ -257,7 +257,7 @@ public class JavaMarketDriver {
 			System.exit(0);
 		}
 
-		// Initialize queues..
+		// Initialize queues
 		LinkedList<Customer> queueA = new LinkedList<>();
 		LinkedList<Customer> queueB = new LinkedList<>();
 		LinkedList<Customer> queueC = new LinkedList<>();
