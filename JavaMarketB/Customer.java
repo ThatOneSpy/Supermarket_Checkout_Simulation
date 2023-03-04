@@ -8,11 +8,14 @@ public class Customer {
 
 	private int finishTime;
 
+	private int id = 000;
+
 	public Customer() // default constructor
 	{
 		arrivalTime = 0;
 		serviceTime = 0;
 		finishTime = 0;
+		id++;
 	}
 
 	public Customer(int arrTime, int serTime) // Constructor takes in the very first customer or a customer with no wait
@@ -21,6 +24,7 @@ public class Customer {
 		arrivalTime = arrTime;
 		serviceTime = serTime;
 		finishTime = arrTime + serTime;
+		id++;
 	}
 
 	public Customer(int arrTime, int serTime, int wait) { // Constructor takes in any other customer with a wait time
@@ -28,10 +32,11 @@ public class Customer {
 		arrivalTime = arrTime;
 		serviceTime = serTime;
 		finishTime = arrTime + serTime + wait;
+		id++;
 	}
 
 	public String toString() {
-		return "Customer arrived at time " + arrivalTime + " with a total service time of " + serviceTime
+		return "Customer " + id + " arrived at time " + arrivalTime + " with a total service time of " + serviceTime
 				+ " minutes and left at time " + finishTime + ".";
 	}
 
@@ -58,8 +63,5 @@ public class Customer {
 	public void setFinishTime(int finishTime) {
 		this.finishTime = finishTime;
 	}
-	
-	
-	
-}
 
+}

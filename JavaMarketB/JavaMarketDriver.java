@@ -255,8 +255,13 @@ public class JavaMarketDriver {
 		Customer a = new Customer(clock, aST);
 
 		numCustomers--;
+
+		// Tracks turnaround
+		int turnaround;
+
 		if (numCustomers == 0) {
 			clock = a.getFinishTime();
+			turnaround = getTurnaround(0, a.getServiceTime());
 			System.out.println(a.toString());
 			System.out.println("Average wait: 0");
 			System.out.println("Total time checkouts were not in use: 0 minutes");
@@ -264,6 +269,7 @@ public class JavaMarketDriver {
 
 		} else {
 			queueA.add(a);
+			turnaround = getTurnaround(0, a.getServiceTime());
 			waits.add(0);
 			System.out.println(a.toString());
 			Customer b;
@@ -274,6 +280,7 @@ public class JavaMarketDriver {
 				int bST = genServiceTime(minServiceTime, maxServiceTime);
 				clock = clock + bAT;
 				int bWait = getWait(a, clock);
+				turnaround = getTurnaround(bWait, bST);
 				waits.add(bWait);
 				b = new Customer(clock, bST, bWait);
 				System.out.println(b.toString());
@@ -329,7 +336,7 @@ public class JavaMarketDriver {
 		// c. the clock time when the customer leaves(finishTime)
 
 		// The program must remember the wait time of that customer even after they
-		// leave (possibly use an array or an ArrayList?)
+		// leave (possibly use an array or an ArrayList?) DONE
 
 		// Customers also have a wait time and a service time that must be kept track
 		// of. Service time begins when they reach the front of the queue. Turnaround
@@ -340,7 +347,7 @@ public class JavaMarketDriver {
 		// time. DONE
 
 		// Keep track of time where checkouts are not being used. This needs to be
-		// minimized.
+		// minimized. DONE
 
 	}
 
@@ -380,6 +387,11 @@ public class JavaMarketDriver {
 
 		return (sum / numCustomers);
 
+	}
+
+	public static int getTurnaround(int wait, int service) {
+		int turnaround = wait + service;
+		return turnaround;
 	}
 
 	public static void serveCustomer(LinkedList<Customer> queue, int clock) {
