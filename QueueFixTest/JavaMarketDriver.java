@@ -239,15 +239,15 @@ public class JavaMarketDriver {
 		try {
 			System.out.print("Enter minimum arrival time between customers:");
 			minArrivalTime = scan.nextInt();
-			System.out.print("Enter maximum arrival time between customers:");
+			System.out.print("Enter maximum arrival time between customers (must be greater than zero):");
 			maxArrivalTime = scan.nextInt();
-			System.out.print("Enter minimum service time:");
+			System.out.print("Enter minimum service time (must be greater than zero):");
 			minServiceTime = scan.nextInt();
-			System.out.print("Enter maximum service time:");
+			System.out.print("Enter maximum service time (must be greater than zero):");
 			maxServiceTime = scan.nextInt();
-			System.out.print("Enter number of customers to serve:");
+			System.out.print("Enter number of customers to serve (must be greater than zero):");
 			numCustomers = scan.nextInt();
-			if (minArrivalTime < 0 || maxArrivalTime < 0 || minServiceTime < 0 || maxServiceTime < 0
+			if (minArrivalTime < 0 || maxArrivalTime <= 0 || minServiceTime <= 0 || maxServiceTime <= 0
 					|| numCustomers <= 0) {
 				System.out.println("Invalid input was entered. Program will close.");
 				System.exit(0);
@@ -278,6 +278,8 @@ public class JavaMarketDriver {
 
 		// Tracks turn around
 		int turnaround;
+
+		System.out.println();
 
 		if (numCustomers == 0) {
 			currentTime = a.getFinishTime();
