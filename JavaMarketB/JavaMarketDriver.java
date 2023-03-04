@@ -223,7 +223,7 @@ public class JavaMarketDriver {
 
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		
+
 		System.out.print("Enter minimum arrival time between customers:");
 		int minArrivalTime = scan.nextInt();
 		System.out.print("Enter maximum arrival time between customers:");
@@ -239,7 +239,7 @@ public class JavaMarketDriver {
 		LinkedList<Customer> queueA = new LinkedList<>();
 		LinkedList<Customer> queueB = new LinkedList<>();
 		LinkedList<Customer> queueC = new LinkedList<>();
-		
+
 		// ArrayList to keep track of Customer wait times
 		ArrayList<Integer> waitList = new ArrayList<>();
 
@@ -254,7 +254,7 @@ public class JavaMarketDriver {
 
 		numCustomers--;
 
-		// Tracks turnaround
+		// Tracks turn around
 		int turnaround;
 
 		if (numCustomers == 0) {
@@ -273,30 +273,37 @@ public class JavaMarketDriver {
 			turnaround = getTurnaround(0, a.getServiceTime());
 			waitList.add(0);
 			System.out.println(a.toString());
-			System.out.println("Went into Queue A.");
 			Customer b;
 			// Use a for loop to go through all customers (make sure to subtract one from
 			// numCustomers because we have a basis)
 			for (int i = 0; i < numCustomers; i++) {
+
 				int bAT = genArrivalTime(minArrivalTime, maxArrivalTime);
 				int bST = genServiceTime(minServiceTime, maxServiceTime);
 				currentTime = currentTime + bAT;
 				int bWait = getWait(a, currentTime);
 				turnaround = getTurnaround(bWait, bST);
+
 				waitList.add(bWait);
 				b = new Customer(currentTime, bST, bWait);
 				System.out.println(b.toString());
+
 				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					queueA.add(b);
 					if (!queueA.isEmpty()) {
 						serveCustomer(queueA, currentTime);
 					}
-				} else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
+
+				}
+
+				else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
 					queueB.add(b);
 					if (!queueB.isEmpty()) {
 						serveCustomer(queueB, currentTime);
 					}
-				} else {
+				}
+
+				else {
 					queueC.add(b);
 					if (!queueC.isEmpty()) {
 						serveCustomer(queueC, currentTime);
@@ -304,19 +311,10 @@ public class JavaMarketDriver {
 				}
 				a = b;
 			}
-			int satisfied = 0;
-			int dissatisfied = 0;
-			for (int i = 0; i < waitList.size(); i++) {
-				if (waitList.get(i) >= 5) {
-					dissatisfied++;
-				} else {
-					satisfied++;
-				}
-			}
+
 			System.out.println("Average wait: " + waitAvg(waitList, (numCustomers + 1)));
 			System.out.println("Total time checkouts were not in use: " + noUse);
-			System.out.println("Customer satisfaction: " + satisfied + " satisfied (<5 minutes)  " + dissatisfied
-					+ " dissatisfied (>=5 minutes)");
+			satisfactionCalc(waitList);
 
 			scan.close();
 		}
@@ -409,10 +407,31 @@ public class JavaMarketDriver {
 
 		// Remove the customer from the queue if they have been served
 		if (customer.getServiceTime() == 0) {
-			
+
 			queue.remove();
-			System.out.println("\nCustomer" + customer.getCustomerId() + " has been removed at time " + customer.getFinishTime() + "\n");
+			System.out.println("\nCustomer" + customer.getCustomerId() + " has been removed at time "
+					+ customer.getFinishTime() + "\n");
 
 		}
+	}
+
+	public static void satisfactionCalc(ArrayList<Integer> wait) {
+		int satisfied = 0;
+		int dissatisfied = 0;
+
+		for (int i = 0; i < wait.size(); i++) {
+
+			if (wait.get(i) >= 5) {
+				dissatisfied++;
+			}
+
+			else {
+				satisfied++;
+			}
+		}
+
+		System.out.println("Customer satisfaction: " + satisfied + " satisfied (<5 minutes)  " + dissatisfied
+				+ " dissatisfied (>=5 minutes)");
+
 	}
 }
