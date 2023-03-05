@@ -1,4 +1,4 @@
-package QueueFixTest;
+package servecustomertest;
 
 public class Customer {
 
@@ -14,8 +14,6 @@ public class Customer {
 
 	private static int idCounter = 0;
 
-	private char queue;
-
 	public Customer() // default constructor
 	{
 		arrivalTime = 0;
@@ -25,33 +23,28 @@ public class Customer {
 		customerId = ++idCounter;
 	}
 
-	public Customer(int arrTime, int serTime, char queue) // Constructor takes in the very first customer or a customer
-															// with no wait
-	// time
+	public Customer(int arrTime, int serTime) // Constructor takes in the very first customer or a customer with no wait
+												// time
 	{
 		arrivalTime = arrTime;
 		serviceTime = serTime;
 		finishTime = arrTime + serTime;
 		serveTime = finishTime - serTime;
-		this.queue = queue;
 		customerId = ++idCounter;
 	}
 
-	public Customer(int arrTime, int serTime, int wait, char queue) { // Constructor takes in any other customer with a
-																		// wait time
-		// determined in the driver
+	public Customer(int arrTime, int serTime, int wait) { // Constructor takes in any other customer with a wait time
+															// determined in the driver
 		arrivalTime = arrTime;
 		serviceTime = serTime;
 		finishTime = arrTime + serTime + wait;
 		serveTime = finishTime - serTime;
-		this.queue = queue;
 		customerId = ++idCounter;
 	}
 
 	public String toString() {
-		return "Customer " + customerId + " arrived at time " + arrivalTime + ", went into queue " + queue
-				+ ", was served at time " + serveTime + " with a total service time of " + serviceTime
-				+ " minutes, and left at time " + finishTime + ".";
+		return "Customer " + customerId + " arrived at time " + arrivalTime + ", was served at time " + serveTime
+				+ " with a total service time of " + serviceTime + " minutes, and left at time " + finishTime + ".";
 	}
 
 	public void setArrivalTime(int arrTime) {
@@ -92,14 +85,6 @@ public class Customer {
 
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
-	}
-
-	public char getQueue() {
-		return queue;
-	}
-
-	public void setQueue(char queue) {
-		this.queue = queue;
 	}
 
 }

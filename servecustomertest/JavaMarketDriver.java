@@ -1,7 +1,6 @@
-package QueueFixTest;
+package servecustomertest;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -225,39 +224,18 @@ public class JavaMarketDriver {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 
-		System.out.println("Welcome to the Java Market Checkout Simulator.");
-		System.out.println(
-				"To get started, please enter some endpoints for ranges that will calculate interarrival time, service time for each customer, and number of customers to serve.");
-		System.out.println("WARNING: Please enter only positive integers in order for the program to run correctly.\n");
+		System.out.print("Enter minimum arrival time between customers:");
+		int minArrivalTime = scan.nextInt();
+		System.out.print("Enter maximum arrival time between customers:");
+		int maxArrivalTime = scan.nextInt();
+		System.out.print("Enter minimum service time:");
+		int minServiceTime = scan.nextInt();
+		System.out.print("Enter maximum service time:");
+		int maxServiceTime = scan.nextInt();
+		System.out.print("Enter number of customers to serve:");
+		int numCustomers = scan.nextInt();
 
-		int minArrivalTime = 0;
-		int maxArrivalTime = 0;
-		int minServiceTime = 0;
-		int maxServiceTime = 0;
-		int numCustomers = 0;
-
-		try {
-			System.out.print("Enter minimum arrival time between customers:");
-			minArrivalTime = scan.nextInt();
-			System.out.print("Enter maximum arrival time between customers (must be greater than zero):");
-			maxArrivalTime = scan.nextInt();
-			System.out.print("Enter minimum service time (must be greater than zero):");
-			minServiceTime = scan.nextInt();
-			System.out.print("Enter maximum service time (must be greater than zero):");
-			maxServiceTime = scan.nextInt();
-			System.out.print("Enter number of customers to serve (must be greater than zero):");
-			numCustomers = scan.nextInt();
-			if (minArrivalTime < 0 || maxArrivalTime <= 0 || minServiceTime <= 0 || maxServiceTime <= 0
-					|| numCustomers <= 0) {
-				System.out.println("Invalid input was entered. Program will close.");
-				System.exit(0);
-			}
-		} catch (InputMismatchException ime) {
-			System.out.println("Input Mismatch Exception. You did not enter an integer. Program needs to exit.");
-			System.exit(0);
-		}
-
-		// Initialize queues..
+		// Initialize queues
 		LinkedList<Customer> queueA = new LinkedList<>();
 		LinkedList<Customer> queueB = new LinkedList<>();
 		LinkedList<Customer> queueC = new LinkedList<>();
@@ -272,14 +250,12 @@ public class JavaMarketDriver {
 		int aAT = genArrivalTime(minArrivalTime, maxArrivalTime);
 		int aST = genServiceTime(minServiceTime, maxServiceTime);
 		currentTime = currentTime + aAT;
-		Customer a = new Customer(currentTime, aST, 'A');
+		Customer a = new Customer(currentTime, aST);
 
 		numCustomers--;
 
 		// Tracks turn around
 		int turnaround;
-
-		System.out.println();
 
 		if (numCustomers == 0) {
 			currentTime = a.getFinishTime();
@@ -294,8 +270,7 @@ public class JavaMarketDriver {
 			turnaround = getTurnaround(0, a.getServiceTime());
 			waitList.add(0);
 			System.out.println(a.toString());
-			System.out.println("Customer went into Queue A.");
-			Customer b = null;
+			Customer b;
 			// Use a for loop to go through all customers (make sure to subtract one from
 			// numCustomers because we have a basis)
 			for (int i = 0; i < numCustomers; i++) {
@@ -305,151 +280,88 @@ public class JavaMarketDriver {
 				currentTime = currentTime + bAT;
 				int bWait = getWait(a, currentTime);
 				turnaround = getTurnaround(bWait, bST);
-				waitList.add(bWait);
 
-				if (bWait > 0) {
+				b = new Customer(currentTime, bST, bWait);
 
-					if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
-						if (!queueA.isEmpty()) {
-							serveCustomer(queueA);
-							b = new Customer(currentTime, bST, bWait, 'A');
-						} else if (queueA.isEmpty()) {
-							b = new Customer(currentTime, bST, 0, 'A');
-						}
-						System.out.println(b.toString());
-						queueA.add(b);
-
-					}
-
-					else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
-						if (!queueB.isEmpty()) {
-							serveCustomer(queueB);
-							b = new Customer(currentTime, bST, bWait, 'B');
-						} else if (queueB.isEmpty()) {
-							b = new Customer(currentTime, bST, 0, 'B');
-						}
-						System.out.println(b.toString());
-						queueB.add(b);
-					}
-
-//					// If the arrival time of the current arrival has the same finish time of
-//					// another customer in another queue while some queues are filled
-//					else if (!queueA.isEmpty() && !queueB.isEmpty()) {
-//						if (currentTime == queueA.getFirst().getFinishTime()
-//								|| currentTime == queueB.getFirst().getFinishTime()) {
-//							// Serve all queues as long as they're not empty
-//							if (!queueA.isEmpty()) {
-//								serveCustomer(queueA);
-//							}
-//							if (!queueB.isEmpty()) {
-//								serveCustomer(queueB);
-//							}
-//							if (!queueC.isEmpty()) {
-//								serveCustomer(queueC);
-//							}
-//							// Then send the customer to the empty queue by priority
-//							if (queueA.isEmpty()) {
-//								b = new Customer(currentTime, bST, 0, 'A');
-//								System.out.println(b.toString());
-//								queueA.add(b);
-//							} else if (queueB.isEmpty()) {
-//								b = new Customer(currentTime, bST, 0, 'B');
-//								System.out.println(b.toString());
-//								queueB.add(b);
-//							} else {
-//								b = new Customer(currentTime, bST, 0, 'C');
-//								System.out.println(b.toString());
-//								queueC.add(b);
-//								System.out.println("Customer went into Queue C.");
-//							}
-//						}
-//					}
-
-					else {
-						if (!queueC.isEmpty()) {
-							serveCustomer(queueC);
-							b = new Customer(currentTime, bST, bWait, 'C');
-						} else if (queueC.isEmpty()) {
-							b = new Customer(currentTime, bST, 0, 'C');
-						}
-						System.out.println(b.toString());
-						queueC.add(b);
-						System.out.println("Customer went into Queue C.");
-					}
-				} else {
-
-					char cusQueue = a.getQueue();
-
-					// First serves customers in all queues
-					if (!queueA.isEmpty()) {
+				if (!queueA.isEmpty()) {
+					if (b.getArrivalTime() >= queueA.getLast().getFinishTime()) {
 						serveCustomer(queueA);
 					}
-					if (!queueB.isEmpty()) {
+				}
+				if (!queueB.isEmpty()) {
+					if (b.getArrivalTime() >= queueB.getLast().getFinishTime()) {
 						serveCustomer(queueB);
 					}
-					if (!queueC.isEmpty()) {
+				}
+				if (!queueC.isEmpty()) {
+					if (b.getArrivalTime() >= queueC.getLast().getFinishTime()) {
 						serveCustomer(queueC);
 					}
+				}
 
-					// If any other queues are empty, otherwise send the customer to the queue to
-					// the one the previous customer just left
-					if (queueA.isEmpty()) {
-						b = new Customer(currentTime, bST, 0, 'A');
-						System.out.println(b.toString());
-						queueA.add(b);
-					} else if (queueB.isEmpty()) {
-						b = new Customer(currentTime, bST, 0, 'B');
-						System.out.println(b.toString());
-						queueB.add(b);
-					} else if (queueC.isEmpty()) {
-						b = new Customer(currentTime, bST, 0, 'C');
-						System.out.println(b.toString());
-						queueC.add(b);
-						System.out.println("Customer went into Queue C.");
-					} else {
-						if (cusQueue == 'A') {
-							if (!queueA.isEmpty()) {
-								serveCustomer(queueA);
-							}
-							b = new Customer(currentTime, bST, bWait, cusQueue);
-							System.out.println(b.toString());
-							queueA.add(b);
-						} else if (cusQueue == 'B') {
-							if (!queueB.isEmpty()) {
-								serveCustomer(queueB);
-							}
-							b = new Customer(currentTime, bST, bWait, cusQueue);
-							System.out.println(b.toString());
-							queueB.add(b);
+				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
+					if (!queueA.isEmpty()) {
+						serveCustomer(queueA);
+						if (!queueA.isEmpty()) {
+							bWait = getWait(queueA.getLast(), currentTime);
+							int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
+							b.setFinishTime(newFinishTime);
 						} else {
-							if (!queueC.isEmpty()) {
-								serveCustomer(queueC);
-							}
-							b = new Customer(currentTime, bST, bWait, cusQueue);
-							System.out.println(b.toString());
-							queueC.add(b);
-							System.out.println("Customer went into Queue C.");
+							b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
 						}
+					} else if (queueA.isEmpty()) {
+						b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
 					}
+					waitList.add(bWait);
+					queueA.add(b);
+					System.out.println("Customer " + b.getCustomerId() + " entered Queue A.");
+					System.out.println(b.toString());
+
+				}
+
+				else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
+					if (!queueB.isEmpty()) {
+						serveCustomer(queueB);
+						if (!queueB.isEmpty()) {
+							bWait = getWait(queueB.getLast(), currentTime);
+							int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
+							b.setFinishTime(newFinishTime);
+						} else {
+							b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
+						}
+					} else if (queueB.isEmpty()) {
+						b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
+					}
+					waitList.add(bWait);
+					queueB.add(b);
+					System.out.println("Customer " + b.getCustomerId() + " entered Queue B.");
+					System.out.println(b.toString());
+				}
+
+				else {
+					if (!queueC.isEmpty()) {
+						serveCustomer(queueC);
+						if (!queueC.isEmpty()) {
+							bWait = getWait(queueC.getLast(), currentTime);
+							int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
+							b.setFinishTime(newFinishTime);
+						} else {
+							b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
+						}
+					} else if (queueC.isEmpty()) {
+						b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
+					}
+					waitList.add(bWait);
+					queueC.add(b);
+					System.out.println("Customer " + b.getCustomerId() + " entered Queue C.");
+					System.out.println(b.toString());
 				}
 				a = b;
-			}
-
-			while (!queueA.isEmpty()) {
-				serveCustomer(queueA);
-			}
-			while (!queueB.isEmpty()) {
-				serveCustomer(queueB);
-			}
-			while (!queueC.isEmpty()) {
-				serveCustomer(queueC);
 			}
 
 			System.out.println("Average wait: " + waitAvg(waitList, (numCustomers + 1)));
 			System.out.println("Total time checkouts were not in use: " + noUse);
 			satisfactionCalc(waitList);
-
-			System.out.println("Simulation complete.");
 
 			scan.close();
 		}
@@ -533,12 +445,9 @@ public class JavaMarketDriver {
 	}
 
 	public static void serveCustomer(LinkedList<Customer> queue) {
-		// Serve the first customer in the queue
-		Customer customer = queue.getFirst();
-		queue.remove(customer);
-		System.out.println("\nCustomer" + customer.getCustomerId() + " has been removed at time "
-				+ customer.getFinishTime() + "\n");
-
+		Customer c = queue.getFirst();
+		System.out.println("Removing Customer " + c.getCustomerId());
+		queue.remove(c);
 	}
 
 	public static void satisfactionCalc(ArrayList<Integer> wait) {
