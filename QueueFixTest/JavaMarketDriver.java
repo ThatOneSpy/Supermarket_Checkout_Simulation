@@ -536,8 +536,7 @@ public class JavaMarketDriver {
 		// Serve the first customer in the queue
 		Customer customer = queue.getFirst();
 		queue.remove(customer);
-		System.out.println("\nCustomer" + customer.getCustomerId() + " has been removed at time "
-				+ customer.getFinishTime() + "\n");
+		
 
 	}
 
