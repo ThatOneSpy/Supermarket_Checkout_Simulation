@@ -1,4 +1,4 @@
-package servecustomertest;
+package besttest;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -224,7 +224,6 @@ public class JavaMarketDriver {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 
-		
 		System.out.print("Enter minimum arrival time between customers:");
 		int minArrivalTime = scan.nextInt();
 		System.out.print("Enter maximum arrival time between customers:");
@@ -376,6 +375,7 @@ public class JavaMarketDriver {
 			System.out.println("Total time checkouts were not in use: " + noUse);
 			satisfactionCalc(waitList);
 
+			System.out.println("Simulation complete.");
 			scan.close();
 		}
 
