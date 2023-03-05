@@ -269,10 +269,12 @@ public class JavaMarketDriver {
 			queueA.add(a);
 			if (!queueA.isEmpty()) {
 				serveCustomer(queueA, currentTime);
+
 			}
 			turnaround = getTurnaround(0, a.getServiceTime());
 			waitList.add(0);
 			System.out.println(a.toString());
+			System.out.println("Customer went into Queue A.");
 			Customer b;
 			// Use a for loop to go through all customers (make sure to subtract one from
 			// numCustomers because we have a basis)
@@ -288,25 +290,23 @@ public class JavaMarketDriver {
 				b = new Customer(currentTime, bST, bWait);
 				System.out.println(b.toString());
 
-				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
+				if (queueA.isEmpty() || (queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					queueA.add(b);
 					if (!queueA.isEmpty()) {
 						serveCustomer(queueA, currentTime);
+						System.out.println("Customer went into Queue A.");
 					}
-
-				}
-
-				else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
+				} else if (queueB.isEmpty() || queueB.size() <= queueA.size() && queueB.size() <= queueC.size()) {
 					queueB.add(b);
 					if (!queueB.isEmpty()) {
 						serveCustomer(queueB, currentTime);
+						System.out.println("Customer went into Queue B.");
 					}
-				}
-
-				else {
+				} else {
 					queueC.add(b);
 					if (!queueC.isEmpty()) {
 						serveCustomer(queueC, currentTime);
+						System.out.println("Customer went into Queue C.");
 					}
 				}
 				a = b;
@@ -318,39 +318,6 @@ public class JavaMarketDriver {
 
 			scan.close();
 		}
-
-		// Use a for loop to go through all customers (make sure to subtract one from
-		// numCustomers because we have a basis)
-
-		// Requirements: three full service queues labeled A, B, C
-		// Arrival and service times are randomly generated within a given range
-		// Ranges are determined by user input, but we suggest ranges that worked best
-		// for the most optimal solution
-		// A virtual clock must be kept track of (use integer values)
-
-		// Customers going through queue: They enter a queue with the least amount of
-		// people already in it, get served, and then leave. If the queues are tied,
-		// then the person joins the queue in alphabetical order
-
-		// Required time data for each customer
-		// a. the clock time when the customer arrives at the queue(arrivalTime)
-		// b. the clock time when the customer is served (finishTime-serviceTime in
-		// blueprint)
-		// c. the clock time when the customer leaves(finishTime) DONE
-
-		// The program must remember the wait time of that customer even after they
-		// leave (possibly use an array or an ArrayList?) DONE
-
-		// Customers also have a wait time and a service time that must be kept track
-		// of. Service time begins when they reach the front of the queue. Turnaround
-		// time is the total time that the customer waited and was served combined. DONE
-
-		// Figure out how to calculate wait time. Take the first person in the queue,
-		// figure out their service time. Take the next person and their interarrival
-		// time. DONE
-
-		// Keep track of time where checkouts are not being used. This needs to be
-		// minimized. DONE
 
 	}
 
@@ -409,8 +376,6 @@ public class JavaMarketDriver {
 		if (customer.getServiceTime() == 0) {
 
 			queue.remove();
-			System.out.println("\nCustomer" + customer.getCustomerId() + " has been removed at time "
-					+ customer.getFinishTime() + "\n");
 
 		}
 	}
