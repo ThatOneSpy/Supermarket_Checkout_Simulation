@@ -448,9 +448,6 @@ public class JavaMarketDriver {
 		Customer c = queue.getFirst();
 		System.out.println("Removing Customer " + c.getCustomerId());
 		queue.remove(c);
-		// Serve the first customer in the queue
-		Customer customer = queue.getFirst();
-		queue.remove(customer);
 	}
 
 	public static void satisfactionCalc(ArrayList<Integer> wait) {
