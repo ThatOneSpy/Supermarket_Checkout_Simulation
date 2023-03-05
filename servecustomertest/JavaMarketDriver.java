@@ -301,7 +301,11 @@ public class JavaMarketDriver {
 
 				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					if (!queueA.isEmpty()) {
-						bWait = getWait(queueA.getFirst(), currentTime);
+						if (queueA.size() > 1) {
+							bWait = getWait(queueA.getLast(), currentTime);
+						} else if (queueA.size() == 1) {
+							bWait = getWait(queueA.getFirst(), currentTime);
+						}
 						int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
 						b.setFinishTime(newFinishTime);
 						int newServeTime = (b.getArrivalTime() + bWait);
@@ -321,7 +325,11 @@ public class JavaMarketDriver {
 
 				else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
 					if (!queueB.isEmpty()) {
-						bWait = getWait(queueB.getFirst(), currentTime);
+						if (queueB.size() > 1) {
+							bWait = getWait(queueB.getLast(), currentTime);
+						} else if (queueB.size() == 1) {
+							bWait = getWait(queueB.getFirst(), currentTime);
+						}
 						int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
 						b.setFinishTime(newFinishTime);
 						int newServeTime = (b.getArrivalTime() + bWait);
@@ -340,7 +348,11 @@ public class JavaMarketDriver {
 
 				else {
 					if (!queueC.isEmpty()) {
-						bWait = getWait(queueC.getFirst(), currentTime);
+						if (queueC.size() > 1) {
+							bWait = getWait(queueC.getLast(), currentTime);
+						} else if (queueC.size() == 1) {
+							bWait = getWait(queueC.getFirst(), currentTime);
+						}
 						int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
 						b.setFinishTime(newFinishTime);
 						int newServeTime = (b.getArrivalTime() + bWait);
