@@ -284,38 +284,32 @@ public class JavaMarketDriver {
 				b = new Customer(currentTime, bST, bWait);
 
 				if (!queueA.isEmpty()) {
-					if (b.getArrivalTime() >= queueA.getLast().getFinishTime()) {
+					if (b.getArrivalTime() >= queueA.getFirst().getFinishTime()) {
 						serveCustomer(queueA);
 					}
 				}
 				if (!queueB.isEmpty()) {
-					if (b.getArrivalTime() >= queueB.getLast().getFinishTime()) {
+					if (b.getArrivalTime() >= queueB.getFirst().getFinishTime()) {
 						serveCustomer(queueB);
 					}
 				}
 				if (!queueC.isEmpty()) {
-					if (b.getArrivalTime() >= queueC.getLast().getFinishTime()) {
+					if (b.getArrivalTime() >= queueC.getFirst().getFinishTime()) {
 						serveCustomer(queueC);
 					}
 				}
 
 				if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
 					if (!queueA.isEmpty()) {
-						serveCustomer(queueA);
-						if (!queueA.isEmpty()) {
-							bWait = getWait(queueA.getLast(), currentTime);
-							int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
-							b.setFinishTime(newFinishTime);
-							int newServeTime = (b.getFinishTime() - b.getServiceTime());
-							b.setServeTime(newServeTime);
-						} else {
-							b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
-							int newServeTime = (b.getFinishTime() - b.getServiceTime());
-							b.setServeTime(newServeTime);
-						}
+						bWait = getWait(queueA.getFirst(), currentTime);
+						int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
+						b.setFinishTime(newFinishTime);
+						int newServeTime = (b.getArrivalTime() + bWait);
+						b.setServeTime(newServeTime);
 					} else if (queueA.isEmpty()) {
+						bWait = 0;
 						b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
-						int newServeTime = (b.getFinishTime() - b.getServiceTime());
+						int newServeTime = (b.getArrivalTime() + bWait);
 						b.setServeTime(newServeTime);
 					}
 					waitList.add(bWait);
@@ -327,21 +321,15 @@ public class JavaMarketDriver {
 
 				else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
 					if (!queueB.isEmpty()) {
-						serveCustomer(queueB);
-						if (!queueB.isEmpty()) {
-							bWait = getWait(queueB.getLast(), currentTime);
-							int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
-							b.setFinishTime(newFinishTime);
-							int newServeTime = (b.getFinishTime() - b.getServiceTime());
-							b.setServeTime(newServeTime);
-						} else {
-							b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
-							int newServeTime = (b.getFinishTime() - b.getServiceTime());
-							b.setServeTime(newServeTime);
-						}
+						bWait = getWait(queueB.getFirst(), currentTime);
+						int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
+						b.setFinishTime(newFinishTime);
+						int newServeTime = (b.getArrivalTime() + bWait);
+						b.setServeTime(newServeTime);
 					} else if (queueB.isEmpty()) {
+						bWait = 0;
 						b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
-						int newServeTime = (b.getFinishTime() - b.getServiceTime());
+						int newServeTime = (b.getArrivalTime() + bWait);
 						b.setServeTime(newServeTime);
 					}
 					waitList.add(bWait);
@@ -352,21 +340,15 @@ public class JavaMarketDriver {
 
 				else {
 					if (!queueC.isEmpty()) {
-						serveCustomer(queueC);
-						if (!queueC.isEmpty()) {
-							bWait = getWait(queueC.getLast(), currentTime);
-							int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
-							b.setFinishTime(newFinishTime);
-							int newServeTime = (b.getFinishTime() - b.getServiceTime());
-							b.setServeTime(newServeTime);
-						} else {
-							b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
-							int newServeTime = (b.getFinishTime() - b.getServiceTime());
-							b.setServeTime(newServeTime);
-						}
+						bWait = getWait(queueC.getFirst(), currentTime);
+						int newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
+						b.setFinishTime(newFinishTime);
+						int newServeTime = (b.getArrivalTime() + bWait);
+						b.setServeTime(newServeTime);
 					} else if (queueC.isEmpty()) {
+						bWait = 0;
 						b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
-						int newServeTime = (b.getFinishTime() - b.getServiceTime());
+						int newServeTime = (b.getArrivalTime() + bWait);
 						b.setServeTime(newServeTime);
 					}
 					waitList.add(bWait);
