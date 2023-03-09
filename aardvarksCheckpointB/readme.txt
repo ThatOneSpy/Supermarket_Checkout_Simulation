@@ -1,0 +1,11 @@
+Java Market Checkpoint B
+	The program for checkpoint B consists of 2 classes one of which is a Customer class that has fields for the arrival time, service time, finish time, serve time, and customer ID with an ID counter. The other class is a Driver for the Java Market and uses three linked lists implementing the customer class for the queues. After taking the user inputs for the times and number of customers we split it into an if and else program, with the if statement that prints the system if there are no customers to serve and the else statement doing most of the heavy lifting. 
+The else statement uses methods that were created in the driver class such as:
+-generate arrival time(which uses math.random for min and max to generate an arrival time)
+-generate service time(which does the same thing as arrival time just for service time)
+-get wait(which  calculate the wait time of a customer in a queue based on their arrival time and the time they finish being served)
+-the wait average(which uses a for loop for the average wait time)
+-get turn around time(which returns the turn around by adding the wait and service)
+-serve customer(which removes the customer by calling the first customer which is the customer that needs to be served)
+-and satisfaction calculation's methods(which basically calculates the satisfaction and dissatisfaction rate). 
+The else statement in a nut shell adds the first customer to queueA, updates the waitList, and prints out the information for the first customer. It then generates the arrival time and service time for the remaining customers and calculates their wait time, turnaround time, finish time, and service time. It then checks the size of each queue and adds the new customer to the shortest queue. If all queues are of equal size, the new customer is added to queueA. It also serves the customers who have finished being served and updates the queue accordingly. Finally, it prints out the information for each customer as they are added to a queue and served.
