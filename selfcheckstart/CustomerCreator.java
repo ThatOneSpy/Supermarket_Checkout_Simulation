@@ -60,18 +60,20 @@ public class CustomerCreator {
 
 	public double getWaitNew(Queue<Customer> checkout, double cusBArrival) {
 		// figure out the next two ahead and who has the smallest time
-		Customer a = checkout.peekFirst();
-		Customer b = checkout.peekSecond();
+		double aFinish = checkout.peekPrevious();
+		Customer b = checkout.peekLast();
 		double finish = 0;
-		if (a.getFinishTime() < b.getFinishTime())
-			finish = a.getFinishTime();
-		else if (b.getFinishTime() < a.getFinishTime())
+		if (aFinish < b.getFinishTime())
+			finish = aFinish;
+		else if (b.getFinishTime() < aFinish)
 			finish = b.getFinishTime();
+		System.out.println("The customer that leaves first has a finish time of " + finish);
 		double wait = finish - cusBArrival;
 		if (wait < 0) {
 			wait = 0;
 			return wait;
 		} else {
+			System.out.println("Wait is: " + wait);
 			return wait;
 		}
 	}

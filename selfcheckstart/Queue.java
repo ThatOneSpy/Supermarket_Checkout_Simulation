@@ -56,9 +56,10 @@ public class Queue<E> {
 		return a;
 	}
 
-	public Customer peekSecond() throws NoSuchElementException {
-		Customer c = queueList.whoIsSecond();
-		return c;
+	public double peekPrevious() throws NoSuchElementException {
+		Customer c = queueList.remove(size() - 2);
+		double finish = c.getFinishTime();
+		return finish;
 	}
 
 	public Customer peekLast() throws NoSuchElementException {

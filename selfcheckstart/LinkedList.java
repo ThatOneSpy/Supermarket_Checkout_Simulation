@@ -227,8 +227,8 @@ public class LinkedList<Customer> {
 		return first.value;
 	}
 
-	public Customer whoIsSecond() {
-		return first.next.value;
+	public Customer whoIsPrevious() {
+		return last.value;
 	}
 
 	public Customer whoIsLast() {

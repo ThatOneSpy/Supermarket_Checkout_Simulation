@@ -1,7 +1,6 @@
 package selfcheckstart;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class SelfCheckOut {
 
@@ -40,14 +39,22 @@ public class SelfCheckOut {
 			double bWait = 0;
 
 			if (!checkout.isEmpty()) {
-				if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
-					checkout.dequeue();
+				if (checkout.size() == 1) {
+					if (b.getArrivalTime() >= checkout.peekLast().getFinishTime()) {
+						checkout.dequeue();
+					}
+				} else {
+					if (b.getArrivalTime() >= checkout.peekLast().getFinishTime()
+							&& b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
+						checkout.dequeue();
+						checkout.dequeue();
+					}
 				}
 			}
 
 			if (!checkout.isEmpty()) {
 				if (checkout.size() > 1) {
-					bWait = create.getWaitNew(checkout, currentTime);
+					bWait = create.getWaitNew(checkout, b.getArrivalTime());
 				} else if (checkout.size() == 1) {
 					bWait = 0;
 				}
