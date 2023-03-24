@@ -16,11 +16,9 @@ public class Queue<E> {
 	}
 
 	// dequeue
-	public boolean dequeue() throws NoSuchElementException {
-
-		Customer a = queueList.whoIsInFront();
-		System.out.println("Customer " + a.getCustomerId() + " has been removed.");
-		queueList.remove(a);
+	public boolean dequeue(Customer c) throws NoSuchElementException {
+		System.out.println("Customer " + c.getCustomerId() + " has been removed.");
+		queueList.remove(c);
 
 		if (queueList.isEmpty()) {
 			return true;
@@ -56,10 +54,9 @@ public class Queue<E> {
 		return a;
 	}
 
-	public double peekPrevious() throws NoSuchElementException {
+	public Customer peekPrevious() throws NoSuchElementException {
 		Customer c = queueList.remove(size() - 2);
-		double finish = c.getFinishTime();
-		return finish;
+		return c;
 	}
 
 	public Customer peekLast() throws NoSuchElementException {

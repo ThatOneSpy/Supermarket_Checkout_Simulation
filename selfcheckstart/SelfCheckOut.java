@@ -23,7 +23,7 @@ public class SelfCheckOut {
 		// Make queue
 		Queue<Customer> checkout = new Queue<>();
 
-		int currentTime = 0;
+		double currentTime = 0.0;
 		CustomerCreator create = new CustomerCreator(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime,
 				currentTime, slow);
 		Customer a = create.callFirstCustomer();
@@ -35,32 +35,49 @@ public class SelfCheckOut {
 
 		for (int i = 0; i < (numCustomers - 1); i++) {
 
-			b = create.callNextCustomer();
+			b = create.callNextCustomer(checkout);
 			double bWait = 0;
 
 			if (!checkout.isEmpty()) {
 				if (checkout.size() == 1) {
-					if (b.getArrivalTime() >= checkout.peekLast().getFinishTime()) {
-						checkout.dequeue();
+					if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
+						checkout.dequeue(checkout.peekFirst());
+						System.out.println("Dequeue 1");
 					}
 				} else {
 					if (b.getArrivalTime() >= checkout.peekLast().getFinishTime()
 							&& b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
-						checkout.dequeue();
-						checkout.dequeue();
+						checkout.dequeue(checkout.peekLast());
+						checkout.dequeue(checkout.peekFirst());
+						System.out.println("Dequeue 2");
+					} else if (b.getArrivalTime() >= checkout.peekPrevious().getFinishTime()) {
+						checkout.dequeue(checkout.peekPrevious());
+						System.out.println("Dequeue 3");
+					} else if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
+						checkout.dequeue(checkout.peekFirst());
+						System.out.println("Dequeue 4");
+					} else {
+						checkout.dequeue(checkout.peekLast());
+						System.out.println("Dequeue 5");
 					}
 				}
 			}
 
-			if (!checkout.isEmpty()) {
-				if (checkout.size() > 1) {
-					bWait = create.getWaitNew(checkout, b.getArrivalTime());
-				} else if (checkout.size() == 1) {
-					bWait = 0;
-				}
-				create.resetFinishTime(b, bWait);
-				create.resetServeTime(b, bWait);
-			} else if (checkout.isEmpty()) {
+//			if (!checkout.isEmpty()) {
+//				if (checkout.size() > 1) {
+//					bWait = create.getWaitNew(checkout, b.getArrivalTime());
+//				} else if (checkout.size() == 1) {
+//					bWait = 0;
+//				}
+//				create.resetFinishTime(b, bWait);
+//				create.resetServeTime(b, bWait);
+//			} else if (checkout.isEmpty()) {
+//				bWait = 0;
+//				create.resetFinishTime(b, bWait);
+//				create.resetServeTime(b, bWait);
+//			}
+
+			if (checkout.size() == 1 || checkout.isEmpty()) {
 				bWait = 0;
 				create.resetFinishTime(b, bWait);
 				create.resetServeTime(b, bWait);
@@ -74,7 +91,9 @@ public class SelfCheckOut {
 			a = b;
 		}
 
-		System.out.println("Average wait: " + waitAvg(waitList, (numCustomers + 1)));
+		System.out.println("Average wait: " +
+
+				waitAvg(waitList, (numCustomers + 1)));
 		System.out.println("Total time checkouts were not in use: 0");
 		satisfactionCalc(waitList);
 
