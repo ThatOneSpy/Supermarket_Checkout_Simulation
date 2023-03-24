@@ -58,6 +58,24 @@ public class CustomerCreator {
 		}
 	}
 
+	public double getWaitNew(Queue<Customer> checkout, double cusBArrival) {
+		// figure out the next two ahead and who has the smallest time
+		Customer a = checkout.peekFirst();
+		Customer b = checkout.peekSecond();
+		double finish = 0;
+		if (a.getFinishTime() < b.getFinishTime())
+			finish = a.getFinishTime();
+		else if (b.getFinishTime() < a.getFinishTime())
+			finish = b.getFinishTime();
+		double wait = finish - cusBArrival;
+		if (wait < 0) {
+			wait = 0;
+			return wait;
+		} else {
+			return wait;
+		}
+	}
+
 	// Generates an arrival time given the two range parameters determined by user
 	public int genArrivalTime(int min, int max) {
 		int r = (int) (Math.random() * (max - min)) + min;

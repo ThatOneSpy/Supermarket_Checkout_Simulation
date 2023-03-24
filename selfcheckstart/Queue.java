@@ -17,22 +17,19 @@ public class Queue<E> {
 
 	// dequeue
 	public boolean dequeue() throws NoSuchElementException {
-	    if (queueList.isEmpty()) {
-	        throw new NoSuchElementException("The queue is empty.");
-	    }
-	    
-	    Customer a = queueList.whoIsInFront();
-	    System.out.println("Customer " + a.getCustomerId() + " has been removed.");
-	    queueList.remove(a);
-	    
-	    if (queueList.isEmpty()) {
-	        return true;
-	    }
-	    
-	    Customer b = queueList.whoIsInFront();
-	    System.out.println("Customer " + b.getCustomerId() + " is now at the front of the queue.");
-	    
-	    return false;
+
+		Customer a = queueList.whoIsInFront();
+		System.out.println("Customer " + a.getCustomerId() + " has been removed.");
+		queueList.remove(a);
+
+		if (queueList.isEmpty()) {
+			return true;
+		}
+
+		Customer b = queueList.whoIsInFront();
+		System.out.println("Customer " + b.getCustomerId() + " is now at the front of the queue.");
+
+		return false;
 	}
 
 	// isEmpty
@@ -57,6 +54,11 @@ public class Queue<E> {
 	public Customer peekFirst() throws NoSuchElementException {
 		Customer a = queueList.whoIsInFront();
 		return a;
+	}
+
+	public Customer peekSecond() throws NoSuchElementException {
+		Customer c = queueList.whoIsSecond();
+		return c;
 	}
 
 	public Customer peekLast() throws NoSuchElementException {
