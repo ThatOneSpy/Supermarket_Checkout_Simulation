@@ -10,6 +10,8 @@ public class CheckoutSimulator {
 	private int minServiceTime;
 	private int maxServiceTime;
 	private int numCustomers;
+	private int maxWaitTime;
+	private int minWaitTime;
 	private List<Customer> customers;
 	private CheckoutQueue queueA;
 	private CheckoutQueue queueB;
@@ -41,13 +43,15 @@ public class CheckoutSimulator {
 		System.out.println("\nCreating Customer(s):");
 		// generate random arrival and service times for each customer
 		for (int i = 0; i < numCustomers; i++) {
+		    int arrivalTime = clock + random.nextInt(maxArrivalTime - minArrivalTime + 1) + minArrivalTime;
+		    int serviceTime = random.nextInt(maxServiceTime - minServiceTime + 1) + minServiceTime;
+		    int waitTime = random.nextInt(maxWaitTime - minWaitTime + 1) + minWaitTime;
+		    Customer customer = new Customer(i + 1, arrivalTime, serviceTime, waitTime);
+		    customer.setWaitTime(waitTime);
 
-			int arrivalTime = clock + random.nextInt(maxArrivalTime - minArrivalTime + 1) + minArrivalTime;
-			int serviceTime = random.nextInt(maxServiceTime - minServiceTime + 1) + minServiceTime;
-			Customer customer = new Customer(i + 1, arrivalTime, serviceTime);
-			customers.add(customer);
-			System.out.println(customer.toString());
-			clock = arrivalTime;
+		    customers.add(customer);
+		    System.out.println(customer.toString());
+		    clock = arrivalTime;
 		}
 
 		// serve customers
@@ -114,7 +118,7 @@ public class CheckoutSimulator {
 		}
 
 		// calculate statistics
-		//loool
+		
 		for (Customer customer : customers) {
 			totalWaitTime += customer.getWaitTime();
 			totalTurnaroundTime += customer.getTurnaroundTime();

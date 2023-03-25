@@ -6,13 +6,17 @@ public class Customer {
 	private int serviceTime;
 	private int startTime;
 	private int finishTime;
+	private int waitTime;
 
-	public Customer(int id, int arrivalTime, int serviceTime) {
+	public Customer(int id, int arrivalTime, int serviceTime,int waitTime) {
 		this.id = id;
 		this.arrivalTime = arrivalTime;
 		this.serviceTime = serviceTime;
-		finishTime = arrivalTime + serviceTime;
-		startTime = finishTime - serviceTime;
+		this.waitTime = waitTime;
+		finishTime = arrivalTime + serviceTime + waitTime;
+		startTime = finishTime - waitTime;
+		
+
 	}
 	
 	public String toString() {
@@ -50,6 +54,9 @@ public class Customer {
 
 	public int getWaitTime() {
 		return startTime - arrivalTime;
+	}
+	public void setWaitTime(int waitTime) {
+		this.waitTime = waitTime;
 	}
 
 	public int getTurnaroundTime() {
