@@ -10,8 +10,6 @@ public class CheckoutSimulator {
 	private int minServiceTime;
 	private int maxServiceTime;
 	private int numCustomers;
-	private int maxWaitTime;
-	private int minWaitTime;
 	private List<Customer> customers;
 	private CheckoutQueue queueA;
 	private CheckoutQueue queueB;
@@ -45,9 +43,8 @@ public class CheckoutSimulator {
 		for (int i = 0; i < numCustomers; i++) {
 		    int arrivalTime = clock + random.nextInt(maxArrivalTime - minArrivalTime + 1) + minArrivalTime;
 		    int serviceTime = random.nextInt(maxServiceTime - minServiceTime + 1) + minServiceTime;
-		    int waitTime = random.nextInt(maxWaitTime - minWaitTime + 1) + minWaitTime;
-		    Customer customer = new Customer(i + 1, arrivalTime, serviceTime, waitTime);
-		    customer.setWaitTime(waitTime);
+		    Customer customer = new Customer(i + 1, arrivalTime, serviceTime);
+	
 
 		    customers.add(customer);
 		    System.out.println(customer.toString());
@@ -85,9 +82,9 @@ public class CheckoutSimulator {
 			   // serve customers in queue A
 		    if (!queueA.isEmpty() && queueA.getFirstCustomer().getFinishTime() == virtualClock) {
 		        Customer customer = queueA.removeFirstCustomer();
-		        idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
 		        virtualClock = customer.getFinishTime();
 		        System.out.println("Customer " + customer.getId() + " removed from queue A at time " + virtualClock);
+		        
 		        totalWaitTime += customer.getWaitTime();
 		        totalTurnaroundTime += customer.getTurnaroundTime();
 		    }
@@ -95,9 +92,9 @@ public class CheckoutSimulator {
 		    // serve customers in queue B
 		    if (!queueB.isEmpty() && queueB.getFirstCustomer().getFinishTime() == virtualClock) {
 		        Customer customer = queueB.removeFirstCustomer();
-		        idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
 		        virtualClock = customer.getFinishTime();
 		        System.out.println("Customer " + customer.getId() + " removed from queue B at time " + virtualClock);
+		        
 		        totalWaitTime += customer.getWaitTime();
 		        totalTurnaroundTime += customer.getTurnaroundTime();
 		    }
@@ -105,12 +102,16 @@ public class CheckoutSimulator {
 		    // serve customers in queue C
 		    if (!queueC.isEmpty() && queueC.getFirstCustomer().getFinishTime() == virtualClock) {
 		        Customer customer = queueC.removeFirstCustomer();
-		        idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
 		        virtualClock = customer.getFinishTime();
 		        System.out.println("Customer " + customer.getId() + " removed from queue C at time " + virtualClock);
 		        totalWaitTime += customer.getWaitTime();
 		        totalTurnaroundTime += customer.getTurnaroundTime();
 		    }
+		    
+		    if(queueA.isEmpty() && queueB.isEmpty() && queueC.isEmpty()) {
+		    	idleTime++;
+		    }
+		    	
 
 			// increment virtual clock
 			virtualClock++;
@@ -131,6 +132,6 @@ public class CheckoutSimulator {
 		System.out.println("Number of customers served: " + numCustomers);
 		System.out.println("Average waiting time: " + avgWaitTime);
 		System.out.println("Average turnaround time: " + avgTurnaroundTime);
-		System.out.println("Idle time: " + idleTime);
+		System.out.println("Total time checkouts were not in use: " + idleTime);
 	}
 }

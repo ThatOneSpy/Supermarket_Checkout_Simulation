@@ -8,13 +8,13 @@ public class Customer {
 	private int finishTime;
 	private int waitTime;
 
-	public Customer(int id, int arrivalTime, int serviceTime,int waitTime) {
+	public Customer(int id, int arrivalTime, int serviceTime) {
 		this.id = id;
 		this.arrivalTime = arrivalTime;
 		this.serviceTime = serviceTime;
-		this.waitTime = waitTime;
-		finishTime = arrivalTime + serviceTime + waitTime;
-		startTime = finishTime - waitTime;
+
+		startTime = arrivalTime + waitTime;
+		finishTime = startTime + serviceTime;
 		
 
 	}
