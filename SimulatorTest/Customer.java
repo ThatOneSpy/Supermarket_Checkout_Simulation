@@ -1,76 +1,58 @@
 package SimulatorTest;
 
 public class Customer {
-    private int arrivalTime;
-    private int serviceTime;
-    private int startServiceTime;
-    private int finishTime;
-    private int turnaroundTime;
-    private int ID;
-    private static int counter;
-    
-    public Customer() {
-    	this.arrivalTime = 0;
-    	this.serviceTime = 0;
-    	this.ID = ++counter;
-    	
-    }
-    
-    // Constructor
-    public Customer(int a, int s) {
-        this.arrivalTime = a;
-        this.serviceTime = s;
-        this.ID = ++counter;
-        
-    }
-    
-    public String toString() {
-		return "Cust ID: " + ID + " ArrivalTime: " + arrivalTime + " ServiceTime: " + serviceTime + ".";
-    	
-    }
-    
-    
-    // Getters and setters
-    public int getArrivalTime() {
-        return arrivalTime;
-    }
-    
-    public int getServiceTime() {
-        return serviceTime;
-    }
-    
-    public int getStartServiceTime() {
-        return startServiceTime;
-    }
-    
-    public void setStartServiceTime(int startServiceTime) {
-        this.startServiceTime = startServiceTime;
-    }
-    
-    public int getFinishTime() {
-        return finishTime;
-    }
-    
-    public void setFinishTime(int finishTime) {
-        this.finishTime = finishTime;
-    }
-    
-    public int getTurnaroundTime() {
-        return turnaroundTime;
-    }
-    
-    public void setTurnaroundTime(int turnaroundTime) {
-        this.turnaroundTime = turnaroundTime;
-    }
+	private int id;
+	private int arrivalTime;
+	private int serviceTime;
+	private int startTime;
+	private int finishTime;
 
-	public int getID() {
-		return ID;
+	public Customer(int id, int arrivalTime, int serviceTime) {
+		this.id = id;
+		this.arrivalTime = arrivalTime;
+		this.serviceTime = serviceTime;
+		finishTime = arrivalTime + serviceTime;
+		startTime = finishTime - serviceTime;
+	}
+	
+	public String toString() {
+		return "Customer " + id + " arrived at time " + arrivalTime + ", was served at time " + startTime
+				+ " with a total service time of " + serviceTime + " minutes, and left at time " + finishTime + ".";
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public int getId() {
+		return id;
 	}
-    
-    
+
+	public int getArrivalTime() {
+		return arrivalTime;
+	}
+
+	public int getServiceTime() {
+		return serviceTime;
+	}
+
+	public int getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(int startTime) {
+		this.startTime = startTime;
+	}
+
+	public int getFinishTime() {
+		return finishTime;
+	}
+
+	public void setFinishTime(int finishTime) {
+		this.finishTime = finishTime;
+	}
+
+	public int getWaitTime() {
+		return startTime - arrivalTime;
+	}
+
+	public int getTurnaroundTime() {
+		return finishTime - arrivalTime;
+	}
 }
-
