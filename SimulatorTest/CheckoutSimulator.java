@@ -114,7 +114,7 @@ public class CheckoutSimulator {
 		}
 
 		// calculate statistics
-		
+		//loool
 		for (Customer customer : customers) {
 			totalWaitTime += customer.getWaitTime();
 			totalTurnaroundTime += customer.getTurnaroundTime();
