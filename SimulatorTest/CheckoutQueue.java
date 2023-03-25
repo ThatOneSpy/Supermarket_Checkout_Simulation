@@ -11,11 +11,15 @@ public class CheckoutQueue {
 	}
 
 	public void addCustomer(Customer customer) {
-		queue.offer(customer);
+		queue.add(customer);
 	}
 
-	public Customer getNextCustomer() {
+	public Customer removeFirstCustomer() {
 		return queue.poll();
+	}
+	
+	public Customer getFirstCustomer() {
+		return queue.peek();
 	}
 
 	public boolean isEmpty() {
@@ -25,4 +29,5 @@ public class CheckoutQueue {
 	public int size() {
 		return queue.size();
 	}
+	
 }

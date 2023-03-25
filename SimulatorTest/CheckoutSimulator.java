@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
 public class CheckoutSimulator {
 	private int minArrivalTime;
 	private int maxArrivalTime;
@@ -35,10 +34,12 @@ public class CheckoutSimulator {
 		int virtualClock = 0;
 		int idleTime = 0;
 		int clock = 0;
+		int count = 0;
 
+		System.out.println("\nCreating Customer(s):");
 		// generate random arrival and service times for each customer
 		for (int i = 0; i < numCustomers; i++) {
-			
+
 			int arrivalTime = clock + random.nextInt(maxArrivalTime - minArrivalTime + 1) + minArrivalTime;
 			int serviceTime = random.nextInt(maxServiceTime - minServiceTime + 1) + minServiceTime;
 			Customer customer = new Customer(i + 1, arrivalTime, serviceTime);
@@ -50,69 +51,58 @@ public class CheckoutSimulator {
 		// serve customers
 
 		while (!customers.isEmpty() || !queueA.isEmpty() || !queueB.isEmpty() || !queueC.isEmpty()) {
-			
+
 			// check if new customers arrive
-			while (!customers.isEmpty() && customers.get(0).getArrivalTime() == virtualClock) {
+			if (!customers.isEmpty() && customers.get(0).getArrivalTime() == virtualClock) {
+				
 				Customer customer = customers.remove(0);
+
 				// add customer to the smallest queue available
 				if (queueA.size() <= queueB.size() && queueA.size() <= queueC.size()) {
 					queueA.addCustomer(customer);
+
 					System.out.println("Customer " + customer.getId() + " added to queue A at time " + virtualClock);
+
 				} else if (queueB.size() <= queueC.size()) {
 					queueB.addCustomer(customer);
 					System.out.println("Customer " + customer.getId() + " added to queue B at time " + virtualClock);
+
 				} else {
 					queueC.addCustomer(customer);
 					System.out.println("Customer " + customer.getId() + " added to queue C at time " + virtualClock);
+
 				}
+
 			}
 			
-			// check if customer is served
 
-			while (!customers.isEmpty() && customers.get(0).getFinishTime() == virtualClock) {
-				// serve customers in queue A
-				if (!queueA.isEmpty()) {
-					Customer customer = queueA.getNextCustomer();
-					if (customer.getStartTime() == 0) {
-						customer.setStartTime(virtualClock);
-					}
-					customer.setFinishTime(virtualClock + customer.getServiceTime());
-					idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
-					virtualClock = customer.getFinishTime();
-					System.out.println("Customer " + customer.getId() + " removed from queue A at time "
-							+ customer.getFinishTime());
-				}
+			   // serve customers in queue A
+		    if (!queueA.isEmpty() && queueA.getFirstCustomer().getFinishTime() == virtualClock) {
+		        Customer customer = queueA.removeFirstCustomer();
+		        idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
+		        virtualClock = customer.getFinishTime();
+		        System.out.println("Customer " + customer.getId() + " removed from queue A at time " + virtualClock);
+		    }
 
-				// serve customers in queue B
-				if (!queueB.isEmpty()) {
-					Customer customer = queueB.getNextCustomer();
-					if (customer.getStartTime() == 0) {
-						customer.setStartTime(virtualClock);
-					}
-					customer.setFinishTime(virtualClock + customer.getServiceTime());
-					idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
-					virtualClock = customer.getFinishTime();
-					System.out.println("Customer " + customer.getId() + " removed from queue B at time "
-							+ customer.getFinishTime());
-				}
+		    // serve customers in queue B
+		    if (!queueB.isEmpty() && queueB.getFirstCustomer().getFinishTime() == virtualClock) {
+		        Customer customer = queueB.removeFirstCustomer();
+		        idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
+		        virtualClock = customer.getFinishTime();
+		        System.out.println("Customer " + customer.getId() + " removed from queue B at time " + virtualClock);
+		    }
 
-				// serve customers in queue C
-				if (!queueC.isEmpty()) {
-					Customer customer = queueC.getNextCustomer();
-					if (customer.getStartTime() == 0) {
-						customer.setStartTime(virtualClock);
-					}
-					customer.setFinishTime(virtualClock + customer.getServiceTime());
-					idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
-					virtualClock = customer.getFinishTime();
-					System.out.println("Customer " + customer.getId() + " removed from queue C at time "
-							+ customer.getFinishTime());
-				}
-			}
+		    // serve customers in queue C
+		    if (!queueC.isEmpty() && queueC.getFirstCustomer().getFinishTime() == virtualClock) {
+		        Customer customer = queueC.removeFirstCustomer();
+		        idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
+		        virtualClock = customer.getFinishTime();
+		        System.out.println("Customer " + customer.getId() + " removed from queue C at time " + virtualClock);
+		    }
 
 			// increment virtual clock
 			virtualClock++;
-			
+
 		}
 
 		// calculate statistics
