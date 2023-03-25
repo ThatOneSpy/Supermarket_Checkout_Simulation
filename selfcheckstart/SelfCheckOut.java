@@ -38,29 +38,35 @@ public class SelfCheckOut {
 			b = create.callNextCustomer(checkout);
 			double bWait = 0;
 
+			System.out.println("Size of the checkout is currently: " + checkout.size());
+
+//			if (!checkout.isEmpty()) {
+//				if (checkout.size() == 1) {
+//					if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
+//						checkout.dequeue(checkout.peekFirst());
+//						System.out.println("Dequeue 1");
+//					}
+//				} else {
+//					if (b.getArrivalTime() >= checkout.peekLast().getFinishTime()
+//							&& b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
+//						checkout.dequeue(checkout.peekLast());
+//						checkout.dequeue(checkout.peekFirst());
+//						System.out.println("Dequeue 2");
+//					} else if (b.getArrivalTime() >= checkout.peekPrevious().getFinishTime()) {
+//						checkout.dequeue(checkout.peekPrevious());
+//						System.out.println("Dequeue 3");
+//					} else if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
+//						checkout.dequeue(checkout.peekFirst());
+//						System.out.println("Dequeue 4");
+//					} else {
+//						checkout.dequeue(checkout.peekLast());
+//						System.out.println("Dequeue 5");
+//					}
+//				}
+//			}
+
 			if (!checkout.isEmpty()) {
-				if (checkout.size() == 1) {
-					if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
-						checkout.dequeue(checkout.peekFirst());
-						System.out.println("Dequeue 1");
-					}
-				} else {
-					if (b.getArrivalTime() >= checkout.peekLast().getFinishTime()
-							&& b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
-						checkout.dequeue(checkout.peekLast());
-						checkout.dequeue(checkout.peekFirst());
-						System.out.println("Dequeue 2");
-					} else if (b.getArrivalTime() >= checkout.peekPrevious().getFinishTime()) {
-						checkout.dequeue(checkout.peekPrevious());
-						System.out.println("Dequeue 3");
-					} else if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
-						checkout.dequeue(checkout.peekFirst());
-						System.out.println("Dequeue 4");
-					} else {
-						checkout.dequeue(checkout.peekLast());
-						System.out.println("Dequeue 5");
-					}
-				}
+				checkout.needToDequeue(b.getArrivalTime());
 			}
 
 //			if (!checkout.isEmpty()) {

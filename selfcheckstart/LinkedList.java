@@ -1,5 +1,7 @@
 package selfcheckstart;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("hiding")
 public class LinkedList<Customer> {
 
@@ -138,6 +140,17 @@ public class LinkedList<Customer> {
 			p = p.next;
 		}
 		return strBuilder.toString();
+	}
+
+	// Returns an ArrayList representation of Customers in the LinkedList
+	public ArrayList<Customer> toArrayList() {
+		ArrayList<Customer> list = new ArrayList<>();
+		Node p = first;
+		while (p != null) {
+			list.add(p.value);
+			p = p.next;
+		}
+		return list;
 	}
 
 	/**

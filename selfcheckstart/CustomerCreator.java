@@ -53,7 +53,7 @@ public class CustomerCreator {
 		DecimalFormat df = new DecimalFormat("0.0");
 		double finish = 0;
 		if (checkout.size() > 1) {
-			double aFinish = checkout.peekPrevious().getFinishTime();
+			double aFinish = checkout.peekFirst().getFinishTime();
 			Customer b = checkout.peekLast();
 			if (aFinish < b.getFinishTime())
 				finish = aFinish;
