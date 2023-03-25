@@ -1,6 +1,6 @@
 package selfcheckstart;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class CustomerCreator {
 
@@ -50,24 +50,27 @@ public class CustomerCreator {
 
 	public double getWaitNew(Queue<Customer> checkout, double cusBArrival) {
 		// figure out the next two ahead and who has the smallest time
-		DecimalFormat df = new DecimalFormat("0.0");
+		ArrayList<Customer> customers = checkout.toArrayList();
 		double finish = 0;
-		if (checkout.size() > 1) {
-			double aFinish = checkout.peekFirst().getFinishTime();
-			Customer b = checkout.peekLast();
-			if (aFinish < b.getFinishTime())
+		if (customers.size() >= 2) {
+			double aFinish = customers.get(customers.size() - 1).getFinishTime();
+			double bFinish = customers.get(customers.size() - 2).getFinishTime();
+			if (aFinish < bFinish) {
 				finish = aFinish;
-			else if (b.getFinishTime() < aFinish)
-				finish = b.getFinishTime();
-			System.out.println("The customer that leaves first has a finish time of " + finish);
+				checkout.dequeue(customers.get(customers.size() - 1));
+			} else if (bFinish < aFinish) {
+				finish = bFinish;
+				checkout.dequeue(customers.get(customers.size() - 2));
+			} else {
+				finish = aFinish;
+				checkout.dequeue(customers.get(customers.size() - 2));
+			}
 		} else {
-			finish = checkout.peekFirst().getFinishTime();
+			finish = 0;
 		}
 		double wait = finish - cusBArrival;
-		System.out.println("Wait is: " + df.format(wait));
 		if (wait < 0) {
 			wait = 0;
-			System.out.println("Wait set to zero.");
 			return wait;
 		} else {
 			return wait;

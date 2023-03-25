@@ -1,5 +1,6 @@
 package selfcheckstart;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class SelfCheckOut {
@@ -30,60 +31,18 @@ public class SelfCheckOut {
 		checkout.enqueue(a);
 		waitList.add(0.0);
 		System.out.println(a.toString());
-		System.out.println("Customer " + a.getCustomerId() + " entered the checkout with a wait of 0 minutes.");
 		create.setPrevious(a);
 
 		for (int i = 0; i < (numCustomers - 1); i++) {
 
 			b = create.callNextCustomer(checkout);
-			double bWait = 0;
-
-			System.out.println("Size of the checkout is currently: " + checkout.size());
-
-//			if (!checkout.isEmpty()) {
-//				if (checkout.size() == 1) {
-//					if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
-//						checkout.dequeue(checkout.peekFirst());
-//						System.out.println("Dequeue 1");
-//					}
-//				} else {
-//					if (b.getArrivalTime() >= checkout.peekLast().getFinishTime()
-//							&& b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
-//						checkout.dequeue(checkout.peekLast());
-//						checkout.dequeue(checkout.peekFirst());
-//						System.out.println("Dequeue 2");
-//					} else if (b.getArrivalTime() >= checkout.peekPrevious().getFinishTime()) {
-//						checkout.dequeue(checkout.peekPrevious());
-//						System.out.println("Dequeue 3");
-//					} else if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
-//						checkout.dequeue(checkout.peekFirst());
-//						System.out.println("Dequeue 4");
-//					} else {
-//						checkout.dequeue(checkout.peekLast());
-//						System.out.println("Dequeue 5");
-//					}
-//				}
-//			}
+			double bWait = b.getWait();
 
 			if (!checkout.isEmpty()) {
 				checkout.needToDequeue(b.getArrivalTime());
 			}
 
-//			if (!checkout.isEmpty()) {
-//				if (checkout.size() > 1) {
-//					bWait = create.getWaitNew(checkout, b.getArrivalTime());
-//				} else if (checkout.size() == 1) {
-//					bWait = 0;
-//				}
-//				create.resetFinishTime(b, bWait);
-//				create.resetServeTime(b, bWait);
-//			} else if (checkout.isEmpty()) {
-//				bWait = 0;
-//				create.resetFinishTime(b, bWait);
-//				create.resetServeTime(b, bWait);
-//			}
-
-			if (checkout.size() == 1 || checkout.isEmpty()) {
+			if (checkout.getCapacity() < 2 || checkout.isEmpty()) {
 				bWait = 0;
 				create.resetFinishTime(b, bWait);
 				create.resetServeTime(b, bWait);
@@ -91,30 +50,16 @@ public class SelfCheckOut {
 			waitList.add(bWait);
 			checkout.enqueue(b);
 			System.out.println(b.toString());
-			System.out.println(
-					"Customer " + b.getCustomerId() + " entered checkout with a wait of " + bWait + " minutes.");
-
 			a = b;
 		}
 
-		System.out.println("Average wait: " +
-
-				waitAvg(waitList, (numCustomers + 1)));
-		System.out.println("Total time checkouts were not in use: 0");
+		DecimalFormat df = new DecimalFormat("0.0");
+		System.out.println("Average wait: " + df.format(waitAvg(waitList, (numCustomers + 1))));
 		satisfactionCalc(waitList);
-
 		System.out.println("Simulation complete.");
 		System.exit(0);
 
 	}
-
-	// waitAvg
-
-	// sum up noUse
-
-	// Enqueue
-
-	// Service/dequeue
 
 	public static double waitAvg(ArrayList<Double> wait, int numCustomers) {
 		double sum = 0;

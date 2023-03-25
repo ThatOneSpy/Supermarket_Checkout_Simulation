@@ -50,14 +50,6 @@ public class LinkedList<Customer> {
 		return first == null;
 	}
 
-	public boolean hasOneOpen() {
-		// If the list has only one person other person
-		if (size() == 1) {
-			return last == null;
-		}
-		return false;
-	}
-
 	public int size() {
 		int count = 0;
 		Node p = first;
@@ -238,10 +230,6 @@ public class LinkedList<Customer> {
 
 	public Customer whoIsInFront() {
 		return first.value;
-	}
-
-	public Customer whoIsPrevious() {
-		return last.value;
 	}
 
 	public Customer whoIsLast() {
