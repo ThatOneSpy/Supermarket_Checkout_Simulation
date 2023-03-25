@@ -2,7 +2,7 @@ package selfcheckstart;
 
 public class Customer {
 
-	private int arrivalTime; // 0..59, the minute of the hour when a customer arrives
+	private double arrivalTime; // 0..59, the minute of the hour when a customer arrives
 
 	private double serviceTime; // 1, 2, or 3 minutes
 
@@ -23,20 +23,22 @@ public class Customer {
 		customerId = ++idCounter;
 	}
 
-	public Customer(int arrTime, double serTime) // Constructor takes in the very first customer or a customer with no
+	public Customer(double arrTime, double serTime) // Constructor takes in the very first customer or a customer with
+													// no
 													// wait
 													// time
 	{
 		arrivalTime = arrTime;
 		serviceTime = serTime;
 		finishTime = arrTime + serTime;
-		serveTime = finishTime - serTime;
+		serveTime = arrTime;
 		customerId = ++idCounter;
 	}
 
-	public Customer(int arrTime, double serTime, double wait) { // Constructor takes in any other customer with a wait
-																// time
-																// determined in the driver
+	public Customer(double arrTime, double serTime, double wait) { // Constructor takes in any other customer with a
+																	// wait
+																	// time
+																	// determined in the driver
 		arrivalTime = arrTime;
 		serviceTime = serTime;
 		finishTime = arrTime + serTime + wait;
@@ -49,11 +51,11 @@ public class Customer {
 				+ " with a total service time of " + serviceTime + " minutes, and left at time " + finishTime + ".";
 	}
 
-	public void setArrivalTime(int arrTime) {
+	public void setArrivalTime(double arrTime) {
 		arrivalTime = arrTime;
 	}
 
-	public int getArrivalTime() {
+	public double getArrivalTime() {
 		return arrivalTime;
 	}
 

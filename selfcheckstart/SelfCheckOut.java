@@ -1,7 +1,6 @@
 package selfcheckstart;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class SelfCheckOut {
 
@@ -24,7 +23,7 @@ public class SelfCheckOut {
 		// Make queue
 		Queue<Customer> checkout = new Queue<>();
 
-		int currentTime = 0;
+		double currentTime = 0.0;
 		CustomerCreator create = new CustomerCreator(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime,
 				currentTime, slow);
 		Customer a = create.callFirstCustomer();
@@ -36,24 +35,55 @@ public class SelfCheckOut {
 
 		for (int i = 0; i < (numCustomers - 1); i++) {
 
-			b = create.callNextCustomer();
+			b = create.callNextCustomer(checkout);
 			double bWait = 0;
 
-			if (!checkout.isEmpty() && !checkout.isOpen()) {
-				if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
-					checkout.dequeue();
-				}
-			}
+			System.out.println("Size of the checkout is currently: " + checkout.size());
+
+//			if (!checkout.isEmpty()) {
+//				if (checkout.size() == 1) {
+//					if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
+//						checkout.dequeue(checkout.peekFirst());
+//						System.out.println("Dequeue 1");
+//					}
+//				} else {
+//					if (b.getArrivalTime() >= checkout.peekLast().getFinishTime()
+//							&& b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
+//						checkout.dequeue(checkout.peekLast());
+//						checkout.dequeue(checkout.peekFirst());
+//						System.out.println("Dequeue 2");
+//					} else if (b.getArrivalTime() >= checkout.peekPrevious().getFinishTime()) {
+//						checkout.dequeue(checkout.peekPrevious());
+//						System.out.println("Dequeue 3");
+//					} else if (b.getArrivalTime() >= checkout.peekFirst().getFinishTime()) {
+//						checkout.dequeue(checkout.peekFirst());
+//						System.out.println("Dequeue 4");
+//					} else {
+//						checkout.dequeue(checkout.peekLast());
+//						System.out.println("Dequeue 5");
+//					}
+//				}
+//			}
 
 			if (!checkout.isEmpty()) {
-				if (checkout.size() > 1) {
-					bWait = create.getWait(checkout.peekLast(), currentTime);
-				} else if (checkout.size() == 1) {
-					bWait = 0;
-				}
-				create.resetFinishTime(b, bWait);
-				create.resetServeTime(b, bWait);
-			} else if (checkout.isEmpty()) {
+				checkout.needToDequeue(b.getArrivalTime());
+			}
+
+//			if (!checkout.isEmpty()) {
+//				if (checkout.size() > 1) {
+//					bWait = create.getWaitNew(checkout, b.getArrivalTime());
+//				} else if (checkout.size() == 1) {
+//					bWait = 0;
+//				}
+//				create.resetFinishTime(b, bWait);
+//				create.resetServeTime(b, bWait);
+//			} else if (checkout.isEmpty()) {
+//				bWait = 0;
+//				create.resetFinishTime(b, bWait);
+//				create.resetServeTime(b, bWait);
+//			}
+
+			if (checkout.size() == 1 || checkout.isEmpty()) {
 				bWait = 0;
 				create.resetFinishTime(b, bWait);
 				create.resetServeTime(b, bWait);
@@ -67,7 +97,9 @@ public class SelfCheckOut {
 			a = b;
 		}
 
-		System.out.println("Average wait: " + waitAvg(waitList, (numCustomers + 1)));
+		System.out.println("Average wait: " +
+
+				waitAvg(waitList, (numCustomers + 1)));
 		System.out.println("Total time checkouts were not in use: 0");
 		satisfactionCalc(waitList);
 
@@ -84,31 +116,6 @@ public class SelfCheckOut {
 
 	// Service/dequeue
 
-	// Generates an arrival time given the two range parameters determined by user
-	public static int genArrivalTime(int min, int max) {
-		int r = (int) (Math.random() * (max - min)) + min;
-		return r;
-	}
-
-	// Generates a service time given the two range parameters determined by user
-	public static int genServiceTime(int min, int max) {
-		int r = (int) (Math.random() * (max - min)) + min;
-		return r;
-	}
-
-	// Generates the wait time of a single customer given that there has been at
-	// least one customer served before them....
-	public static double getWait(Customer a, int cusBArrival) {
-		double finish = a.getFinishTime();
-		double wait = finish - cusBArrival;
-		if (wait < 0) {
-			wait = 0;
-			return wait;
-		} else {
-			return wait;
-		}
-	}
-
 	public static double waitAvg(ArrayList<Double> wait, int numCustomers) {
 		double sum = 0;
 		for (int i = 0; i < wait.size(); i++) {
@@ -124,11 +131,6 @@ public class SelfCheckOut {
 	public static int getTurnaround(int wait, int service) {
 		int turnaround = wait + service;
 		return turnaround;
-	}
-
-	public static void serveCustomers(LinkedList<Customer> queue) {
-		Customer c = queue.getFirst();
-		queue.remove(c);
 	}
 
 	public static void satisfactionCalc(ArrayList<Double> wait) {

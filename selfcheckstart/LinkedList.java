@@ -1,5 +1,7 @@
 package selfcheckstart;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("hiding")
 public class LinkedList<Customer> {
 
@@ -140,6 +142,17 @@ public class LinkedList<Customer> {
 		return strBuilder.toString();
 	}
 
+	// Returns an ArrayList representation of Customers in the LinkedList
+	public ArrayList<Customer> toArrayList() {
+		ArrayList<Customer> list = new ArrayList<>();
+		Node p = first;
+		while (p != null) {
+			list.add(p.value);
+			p = p.next;
+		}
+		return list;
+	}
+
 	/**
 	 * The remove method removes the element at an index.
 	 * 
@@ -225,6 +238,10 @@ public class LinkedList<Customer> {
 
 	public Customer whoIsInFront() {
 		return first.value;
+	}
+
+	public Customer whoIsPrevious() {
+		return last.value;
 	}
 
 	public Customer whoIsLast() {

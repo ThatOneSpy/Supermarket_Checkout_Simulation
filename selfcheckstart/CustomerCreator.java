@@ -1,12 +1,14 @@
 package selfcheckstart;
 
+import java.text.DecimalFormat;
+
 public class CustomerCreator {
 
 	private int minArrive;
 	private int maxArrive;
 	private int minService;
 	private int maxService;
-	private int currentTime;
+	private double currentTime;
 	private Customer previous;
 	private double percentSlow;
 
@@ -20,7 +22,7 @@ public class CustomerCreator {
 		percentSlow = 0;
 	}
 
-	public CustomerCreator(int minA, int maxA, int minS, int maxS, int time, double percent) {
+	public CustomerCreator(int minA, int maxA, int minS, int maxS, double time, double percent) {
 		minArrive = minA;
 		maxArrive = maxA;
 		minService = minS;
@@ -32,26 +34,40 @@ public class CustomerCreator {
 
 	public Customer callFirstCustomer() {
 		double service = genServiceTimeWithPercent(minService, maxService, percentSlow);
-		currentTime = currentTime + genArrivalTime(minArrive, maxArrive);
+		currentTime = 0.0 + (double) genArrivalTime(minArrive, maxArrive);
 		Customer a = new Customer(currentTime, service);
 		return a;
 	}
 
-	public Customer callNextCustomer() {
+	public Customer callNextCustomer(Queue<Customer> checkout) {
 		double service = genServiceTimeWithPercent(minService, maxService, percentSlow);
-		currentTime = currentTime + genArrivalTime(minArrive, maxArrive);
-		double wait = getWait(previous, currentTime);
+		currentTime = currentTime + (double) genArrivalTime(minArrive, maxArrive);
+		double wait = getWaitNew(checkout, currentTime);
 		Customer b = new Customer(currentTime, service, wait);
 		return b;
 
 	}
 
-	// Get wait
-	public double getWait(Customer a, int cusBArrival) {
-		double finish = a.getFinishTime();
+	public double getWaitNew(Queue<Customer> checkout, double cusBArrival) {
+		// figure out the next two ahead and who has the smallest time
+		DecimalFormat df = new DecimalFormat("0.0");
+		double finish = 0;
+		if (checkout.size() > 1) {
+			double aFinish = checkout.peekFirst().getFinishTime();
+			Customer b = checkout.peekLast();
+			if (aFinish < b.getFinishTime())
+				finish = aFinish;
+			else if (b.getFinishTime() < aFinish)
+				finish = b.getFinishTime();
+			System.out.println("The customer that leaves first has a finish time of " + finish);
+		} else {
+			finish = checkout.peekFirst().getFinishTime();
+		}
 		double wait = finish - cusBArrival;
+		System.out.println("Wait is: " + df.format(wait));
 		if (wait < 0) {
 			wait = 0;
+			System.out.println("Wait set to zero.");
 			return wait;
 		} else {
 			return wait;
@@ -60,12 +76,6 @@ public class CustomerCreator {
 
 	// Generates an arrival time given the two range parameters determined by user
 	public int genArrivalTime(int min, int max) {
-		int r = (int) (Math.random() * (max - min)) + min;
-		return r;
-	}
-
-	// Generates a service time given the two range parameters determined by user
-	public int genServiceTime(int min, int max) {
 		int r = (int) (Math.random() * (max - min)) + min;
 		return r;
 	}
@@ -93,11 +103,11 @@ public class CustomerCreator {
 		b.setServeTime(newServeTime);
 	}
 
-	public int getCurrentTime() {
+	public double getCurrentTime() {
 		return currentTime;
 	}
 
-	public void setCurrentTime(int currentTime) {
+	public void setCurrentTime(double currentTime) {
 		this.currentTime = currentTime;
 	}
 
