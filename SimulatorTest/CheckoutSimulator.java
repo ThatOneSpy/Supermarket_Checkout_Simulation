@@ -35,6 +35,8 @@ public class CheckoutSimulator {
 		int idleTime = 0;
 		int clock = 0;
 		int count = 0;
+		int totalWaitTime = 0;
+		int totalTurnaroundTime = 0;
 
 		System.out.println("\nCreating Customer(s):");
 		// generate random arrival and service times for each customer
@@ -82,6 +84,8 @@ public class CheckoutSimulator {
 		        idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
 		        virtualClock = customer.getFinishTime();
 		        System.out.println("Customer " + customer.getId() + " removed from queue A at time " + virtualClock);
+		        totalWaitTime += customer.getWaitTime();
+		        totalTurnaroundTime += customer.getTurnaroundTime();
 		    }
 
 		    // serve customers in queue B
@@ -90,6 +94,8 @@ public class CheckoutSimulator {
 		        idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
 		        virtualClock = customer.getFinishTime();
 		        System.out.println("Customer " + customer.getId() + " removed from queue B at time " + virtualClock);
+		        totalWaitTime += customer.getWaitTime();
+		        totalTurnaroundTime += customer.getTurnaroundTime();
 		    }
 
 		    // serve customers in queue C
@@ -98,6 +104,8 @@ public class CheckoutSimulator {
 		        idleTime += customer.getStartTime() - virtualClock - customer.getServiceTime();
 		        virtualClock = customer.getFinishTime();
 		        System.out.println("Customer " + customer.getId() + " removed from queue C at time " + virtualClock);
+		        totalWaitTime += customer.getWaitTime();
+		        totalTurnaroundTime += customer.getTurnaroundTime();
 		    }
 
 			// increment virtual clock
@@ -106,8 +114,7 @@ public class CheckoutSimulator {
 		}
 
 		// calculate statistics
-		int totalWaitTime = 0;
-		int totalTurnaroundTime = 0;
+		
 		for (Customer customer : customers) {
 			totalWaitTime += customer.getWaitTime();
 			totalTurnaroundTime += customer.getTurnaroundTime();
