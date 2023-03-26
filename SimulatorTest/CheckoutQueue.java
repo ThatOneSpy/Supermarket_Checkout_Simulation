@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class CheckoutQueue {
-	private Queue<Customer> queue;
+	private LinkedList<Customer> queue;
 
 	public CheckoutQueue() {
 		queue = new LinkedList<>();

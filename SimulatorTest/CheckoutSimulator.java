@@ -49,9 +49,15 @@ public class CheckoutSimulator {
 		    customers.add(customer);
 		    System.out.println(customer.toString());
 		    clock = arrivalTime;
+		    
 		}
+		System.out.println("");
 
-		// serve customers
+		// 50% chance (0 or 1)
+		int chance = random.nextInt(2) ;
+
+		
+		// Go into full checkout
 
 		while (!customers.isEmpty() || !queueA.isEmpty() || !queueB.isEmpty() || !queueC.isEmpty()) {
 
@@ -83,9 +89,11 @@ public class CheckoutSimulator {
 		    if (!queueA.isEmpty() && queueA.getFirstCustomer().getFinishTime() == virtualClock) {
 		        Customer customer = queueA.removeFirstCustomer();
 		        virtualClock = customer.getFinishTime();
-		        System.out.println("Customer " + customer.getId() + " removed from queue A at time " + virtualClock);
 		        
+		        System.out.println("Customer " + customer.getId() + " removed from queue A at time " + virtualClock + " with a wait time of " + customer.getWaitTime());
 		        totalWaitTime += customer.getWaitTime();
+		        customer.setWaitTime(0);
+		        
 		        totalTurnaroundTime += customer.getTurnaroundTime();
 		    }
 
@@ -93,9 +101,10 @@ public class CheckoutSimulator {
 		    if (!queueB.isEmpty() && queueB.getFirstCustomer().getFinishTime() == virtualClock) {
 		        Customer customer = queueB.removeFirstCustomer();
 		        virtualClock = customer.getFinishTime();
-		        System.out.println("Customer " + customer.getId() + " removed from queue B at time " + virtualClock);
-		        
+		        System.out.println("Customer " + customer.getId() + " removed from queue B at time " + virtualClock + " with a wait time of " + customer.getWaitTime());
 		        totalWaitTime += customer.getWaitTime();
+		        customer.setWaitTime(0);
+		        
 		        totalTurnaroundTime += customer.getTurnaroundTime();
 		    }
 
@@ -103,15 +112,16 @@ public class CheckoutSimulator {
 		    if (!queueC.isEmpty() && queueC.getFirstCustomer().getFinishTime() == virtualClock) {
 		        Customer customer = queueC.removeFirstCustomer();
 		        virtualClock = customer.getFinishTime();
-		        System.out.println("Customer " + customer.getId() + " removed from queue C at time " + virtualClock);
+		        System.out.println("Customer " + customer.getId() + " removed from queue C at time " + virtualClock + " with a wait time of " + customer.getWaitTime());
 		        totalWaitTime += customer.getWaitTime();
+		        customer.setWaitTime(0);
+		        
 		        totalTurnaroundTime += customer.getTurnaroundTime();
 		    }
 		    
 		    if(queueA.isEmpty() && queueB.isEmpty() && queueC.isEmpty()) {
 		    	idleTime++;
-		    }
-		    	
+		    }   	
 
 			// increment virtual clock
 			virtualClock++;

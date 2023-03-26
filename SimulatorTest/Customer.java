@@ -15,13 +15,11 @@ public class Customer {
 
 		startTime = arrivalTime + waitTime;
 		finishTime = startTime + serviceTime;
-		
 
 	}
-	
+
 	public String toString() {
-		return "Customer " + id + " arrived at time " + arrivalTime + ", was served at time " + startTime
-				+ " with a total service time of " + serviceTime + " minutes, and left at time " + finishTime + ".";
+		return "Customer " + id + " arrives at time " + arrivalTime + " with a total service time of " + serviceTime;
 	}
 
 	public int getId() {
@@ -55,6 +53,7 @@ public class Customer {
 	public int getWaitTime() {
 		return startTime - arrivalTime;
 	}
+
 	public void setWaitTime(int waitTime) {
 		this.waitTime = waitTime;
 	}
