@@ -320,6 +320,10 @@ public class JavaMarketDriver {
 			Customer b;
 			// Use a for loop to go through all customers (make sure to subtract one from
 			// numCustomers because we have a basis)
+			
+			int fullCount = 0;
+			int selfCount = 0;
+			
 			for (int i = 0; i < numCustomers; i++) {
 
 				int bAT = genArrivalTime(minArrivalTime, maxArrivalTime);
@@ -332,8 +336,12 @@ public class JavaMarketDriver {
 
 				Random random = new Random();
 				int chance = random.nextInt(2);
+				
+
 
 				if (chance == 0) {
+					fullCount++;
+					
 					System.out.println("Customer entering FULL-Checkout");
 
 					if (!queueA.isEmpty()) {
@@ -426,6 +434,7 @@ public class JavaMarketDriver {
 					}
 					a = b;
 				} else {
+					selfCount++;
 					System.out.println("Customer entering SELF-Checkout");
 
 					bWait = (int) b.getWait();
@@ -447,10 +456,11 @@ public class JavaMarketDriver {
 			}
 			// End of full Service
 			DecimalFormat df = new DecimalFormat("0.0");
-			System.out.println("Average full checkout wait: " + waitAvg(waitList, (numCustomers + 1)));
-			System.out.println("Average self checkout wait: " + waitAvg(selfWaitList, (numCustomers + 1)));
+			System.out.println("Average full checkout wait: " + waitAvg(waitList, (fullCount + 1)));
+			System.out.println("Average self checkout wait: " + waitAvg(selfWaitList, (selfCount)));
 
 			System.out.println("Total time checkouts were not in use: " + noUse);
+			waitList.addAll(selfWaitList);
 			satisfactionCalc(waitList);
 
 			System.out.println("Simulation complete.");
