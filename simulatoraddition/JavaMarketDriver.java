@@ -1,0 +1,68 @@
+package simulatoraddition;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class JavaMarketDriver {
+
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+
+		System.out.println("Welcome to the Java Market Checkout Simulator.");
+		System.out.println(
+				"To get started, please enter some endpoints for ranges that will calculate interarrival time, service time for each customer, and number of customers to serve.");
+		System.out.println("WARNING: Please enter only positive integers in order for the program to run correctly.\n");
+
+		System.out.println("The following are recommended intervals and number to yield the best results.");
+		System.out.println(
+				"As the range of both interarrival time and service time increases, the likelihood of increased minutes of no checkouts being used goes up.");
+		System.out.println(
+				"This applies to expanding numbers of customers, where the more customers you serve, the likelihood of customer dissatisfication increases.");
+		System.out.println("Recommended interval for interarrival and service times: 2-5");
+		System.out.println("Recommended amount of customers to serve: 100");
+		System.out.println("Recommended slow percentage for self-checkout customers: 20\n");
+
+		int minArrivalTime = 0;
+		int maxArrivalTime = 0;
+		int minServiceTime = 0;
+		int maxServiceTime = 0;
+		int numCustomers = 0;
+		int percentSlower = 0;
+
+		try {
+
+			System.out.print("Enter minimum interarrival time between customers (Must be at least zero):");
+			minArrivalTime = scan.nextInt();
+			System.out.print("Enter maximum interarrival time between customers (Must be greater than zero):");
+			maxArrivalTime = scan.nextInt();
+			System.out.print("Enter minimum service time (Must be greater than zero):");
+			minServiceTime = scan.nextInt();
+			System.out.print("Enter maximum service time (Must be greater than zero):");
+			maxServiceTime = scan.nextInt();
+			System.out.print("Enter number of customers to serve (Must be greater than zero):");
+			numCustomers = scan.nextInt();
+			System.out.print("Percentage(%) slower for SELF: ");
+			percentSlower = scan.nextInt();
+
+			if (minArrivalTime < 0 || maxArrivalTime <= 0 || minServiceTime <= 0 || maxServiceTime <= 0
+					|| numCustomers <= 0 || percentSlower <= 0) {
+				System.out.println("Invalid input was entered. Program will close.");
+				System.exit(0);
+			}
+
+		} catch (InputMismatchException ime) {
+			System.out.println("Input Mismatch Exception. You did not enter an integer. Program needs to exit.");
+			System.exit(0);
+
+		}
+
+		System.out.println();
+		Simulator simulate = new Simulator(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime, numCustomers,
+				percentSlower);
+		simulate.run();
+		System.out.println("Simulation complete.");
+		scan.close();
+		System.exit(0);
+
+	}
+}

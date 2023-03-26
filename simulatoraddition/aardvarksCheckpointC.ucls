@@ -28,7 +28,16 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="aardvarksCheckpointC.LinkedList" project="CSC223-Ardvarks" 
+  <class id="4" language="java" name="aardvarksCheckpointC.JavaMarketDriver.Node" project="CSC223-Ardvarks" 
+    file="/CSC223-Ardvarks/aardvarksCheckpointC/JavaMarketDriver.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="196" y="234"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="aardvarksCheckpointC.LinkedList" project="CSC223-Ardvarks" 
     file="/CSC223-Ardvarks/aardvarksCheckpointC/LinkedList.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="921" y="891"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -37,7 +46,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="aardvarksCheckpointC.LinkedList.Node" project="CSC223-Ardvarks" 
+  <class id="6" language="java" name="aardvarksCheckpointC.LinkedList.Node" project="CSC223-Ardvarks" 
     file="/CSC223-Ardvarks/aardvarksCheckpointC/LinkedList.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1253" y="887"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -46,7 +55,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="aardvarksCheckpointC.Queue" project="CSC223-Ardvarks" 
+  <class id="7" language="java" name="aardvarksCheckpointC.Queue" project="CSC223-Ardvarks" 
     file="/CSC223-Ardvarks/aardvarksCheckpointC/Queue.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="560" y="886"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -55,68 +64,120 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <nesting id="7">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="5"/>  
+  <nesting id="8">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
   </nesting>  
-  <association id="8">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="9" name="queueList">        
-        <position height="0" width="0" x="-506" y="140"/>      
+  <association id="9">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="10" name="first">        
+        <position height="0" width="0" x="-31" y="-464"/>      
       </attribute>      
-      <multiplicity id="10" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-506" y="140"/>      
+      <multiplicity id="11" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-31" y="-464"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="11">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="12" name="previous">        
+  <association id="12">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="13" name="first">        
+        <position height="0" width="0" x="33" y="-130"/>      
+      </attribute>      
+      <multiplicity id="14" minimum="0" maximum="1">        
+        <position height="0" width="0" x="33" y="-130"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="15">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <association id="16">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="17" name="last">        
+        <position height="0" width="0" x="-31" y="-464"/>      
+      </attribute>      
+      <multiplicity id="18" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-31" y="-464"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="20" name="queueList">        
+        <position height="0" width="0" x="-506" y="140"/>      
+      </attribute>      
+      <multiplicity id="21" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-506" y="140"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="23" name="next">        
+        <position height="0" width="0" x="33" y="-130"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="1">        
+        <position height="0" width="0" x="33" y="-130"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="26" name="value">        
         <position height="0" width="0" x="-73" y="123"/>      
       </attribute>      
-      <multiplicity id="13" minimum="0" maximum="1">        
+      <multiplicity id="27" minimum="0" maximum="1">        
         <position height="0" width="0" x="-73" y="123"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="14">    
+  <association id="28">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="15" name="last">        
-        <position height="0" width="0" x="33" y="-130"/>      
+      <attribute id="29" name="next">        
+        <position height="0" width="0" x="-31" y="-464"/>      
       </attribute>      
-      <multiplicity id="16" minimum="0" maximum="1">        
-        <position height="0" width="0" x="33" y="-130"/>      
+      <multiplicity id="30" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-31" y="-464"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="17">    
+  <association id="31">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="32" name="previous">        
+        <position height="0" width="0" x="-73" y="123"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-73" y="123"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="18" name="next">        
+      <attribute id="35" name="last">        
         <position height="0" width="0" x="33" y="-130"/>      
       </attribute>      
-      <multiplicity id="19" minimum="0" maximum="1">        
+      <multiplicity id="36" minimum="0" maximum="1">        
         <position height="0" width="0" x="33" y="-130"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="20">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="21" name="first">        
-        <position height="0" width="0" x="33" y="-130"/>      
-      </attribute>      
-      <multiplicity id="22" minimum="0" maximum="1">        
-        <position height="0" width="0" x="33" y="-130"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
