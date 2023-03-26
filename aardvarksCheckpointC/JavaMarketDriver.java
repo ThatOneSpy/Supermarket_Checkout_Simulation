@@ -238,7 +238,8 @@ public class JavaMarketDriver {
 		System.out.println(
 				"This applies to expanding numbers of customers, where the more customers you serve, the likelihood of customer dissatisfication increases.");
 		System.out.println("Recommended interval for interarrival and service times: 2-5");
-		System.out.println("Recommended amount of customers to serve: 100\n");
+		System.out.println("Recommended amount of customers to serve: 100");
+		System.out.println("Recommended slow percentage for self-checkout customers: 20\n");
 
 		int minArrivalTime = 0;
 		int maxArrivalTime = 0;
@@ -259,7 +260,7 @@ public class JavaMarketDriver {
 			maxServiceTime = scan.nextInt();
 			System.out.print("Enter number of customers to serve (Must be greater than zero):");
 			numCustomers = scan.nextInt();
-			System.out.print("Percentage slower for SELF: ");
+			System.out.print("Percentage(%) slower for SELF: ");
 			percentSlower = scan.nextInt();
 			double slow = calculatePercentSlower(percentSlower);
 
@@ -294,6 +295,7 @@ public class JavaMarketDriver {
 		int aAT = genArrivalTime(minArrivalTime, maxArrivalTime);
 		int aST = genServiceTime(minServiceTime, maxServiceTime);
 		currentTime = currentTime + aAT;
+		System.out.println("\nCustomer entering FULL-Checkout");
 		Customer a = new Customer(currentTime, aST);
 
 		numCustomers--;
@@ -320,10 +322,10 @@ public class JavaMarketDriver {
 			Customer b;
 			// Use a for loop to go through all customers (make sure to subtract one from
 			// numCustomers because we have a basis)
-			
+
 			int fullCount = 0;
 			int selfCount = 0;
-			
+
 			for (int i = 0; i < numCustomers; i++) {
 
 				int bAT = genArrivalTime(minArrivalTime, maxArrivalTime);
@@ -336,13 +338,11 @@ public class JavaMarketDriver {
 
 				Random random = new Random();
 				int chance = random.nextInt(2);
-				
-
 
 				if (chance == 0) {
 					fullCount++;
-					
-					System.out.println("Customer entering FULL-Checkout");
+
+					System.out.println("\nCustomer entering FULL-Checkout");
 
 					if (!queueA.isEmpty()) {
 						if (b.getArrivalTime() >= queueA.getFirst().getFinishTime()) {
@@ -435,7 +435,7 @@ public class JavaMarketDriver {
 					a = b;
 				} else {
 					selfCount++;
-					System.out.println("Customer entering SELF-Checkout");
+					System.out.println("\nCustomer entering SELF-Checkout");
 
 					bWait = (int) b.getWait();
 
@@ -456,6 +456,7 @@ public class JavaMarketDriver {
 			}
 			// End of full Service
 			DecimalFormat df = new DecimalFormat("0.0");
+			System.out.println("\nSimulation Results:");
 			System.out.println("Average full checkout wait: " + waitAvg(waitList, (fullCount + 1)));
 			System.out.println("Average self checkout wait: " + waitAvg(selfWaitList, (selfCount)));
 
