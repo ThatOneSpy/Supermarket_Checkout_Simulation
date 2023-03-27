@@ -58,13 +58,8 @@ public class Simulator {
 
 		numCustomers--;
 
-		// Turnaround time
-		@SuppressWarnings("unused")
-		double turnaround;
-
 		if (numCustomers == 0) {
 			currentTime = a.getFinishTime();
-			turnaround = getTurnaround(0, (int) a.getServiceTime());
 			System.out.println(a.toString());
 			System.out.println("Average wait: 0");
 			System.out.println("Total time checkouts were not in use: 0 minutes");
@@ -82,9 +77,9 @@ public class Simulator {
 				selfCount++;
 				selfQueue.enqueue(a);
 				System.out.println(a.toString());
-				System.out.println("Customer " + a.getCustomerId() + " entered Queue D with a wait of 0 minutes.");
+				System.out
+						.println("Customer " + a.getCustomerId() + " entered self-checkout with a wait of 0 minutes.");
 			}
-			turnaround = getTurnaround(0, a.getServiceTime());
 			waitList.add(0.0);
 			create.setPrevious(a);
 			Customer b;
@@ -197,7 +192,6 @@ public class Simulator {
 		double wait = finish - currentTime;
 		if (wait < 0) {
 			wait = (-wait);
-			noUse = noUse + wait;
 			wait = 0;
 			return wait;
 		} else {
@@ -215,11 +209,6 @@ public class Simulator {
 
 		return avg;
 
-	}
-
-	public double getTurnaround(double bWait, double d) {
-		double turnaround = bWait + d;
-		return turnaround;
 	}
 
 	public void serveCustomer(LinkedList<Customer> queue) {
@@ -273,16 +262,17 @@ public class Simulator {
 			} else if (queue.size() == 1) {
 				bWait = getWait(queue.getFirst(), currentTime);
 			}
-			int newFinishTime = (int) (b.getArrivalTime() + b.getServiceTime() + bWait);
+			double newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
 			b.setFinishTime(newFinishTime);
-			int newServeTime = (int) (b.getArrivalTime() + bWait);
+			double newServeTime = (b.getArrivalTime() + bWait);
 			b.setServeTime(newServeTime);
 		} else if (queue.isEmpty()) {
 			bWait = 0;
 			b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
-			int newServeTime = (int) (b.getArrivalTime() + bWait);
+			double newServeTime = (b.getArrivalTime() + bWait);
 			b.setServeTime(newServeTime);
 		}
+		System.out.println("Wait is " + bWait);
 		return bWait;
 	}
 

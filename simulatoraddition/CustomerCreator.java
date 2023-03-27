@@ -6,8 +6,8 @@ public class CustomerCreator {
 
 	private int minArrive;
 	private int maxArrive;
-	private int minService;
-	private int maxService;
+	private double minService;
+	private double maxService;
 	private double currentTime;
 	private Customer previous;
 	private double percentSlow;
@@ -40,13 +40,12 @@ public class CustomerCreator {
 
 	public Customer callNextCustomerFull(int arrival, int service, Customer a) {
 		double bWait = getWait(a, currentTime);
-		double turnaround = getTurnaround(bWait, service);
 		Customer b = new Customer(currentTime, service, bWait);
 		return b;
 	}
 
 	public double getWait(Customer a, double currentTime) {
-		int finish = (int) a.getFinishTime();
+		double finish = a.getFinishTime();
 		double wait = finish - currentTime;
 		if (wait < 0) {
 			wait = (-wait);
@@ -94,15 +93,10 @@ public class CustomerCreator {
 
 	// Generates a service time given two range parameters and a percentage slower
 	// by user
-	public double genServiceTimeWithPercent(int min, int max, double percent) {
-		double r = (int) (Math.random() * (max - min)) + min;
+	public double genServiceTimeWithPercent(double minService2, double maxService2, double percent) {
+		double r = (int) (Math.random() * (maxService2 - minService2)) + minService2;
 		double newSer = (r * percent) + r;
 		return newSer;
-	}
-
-	public double getTurnaround(double wait, double service) {
-		double turnaround = wait + service;
-		return turnaround;
 	}
 
 	public void resetFinishTime(Customer b, double wait) {
