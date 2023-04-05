@@ -1,5 +1,6 @@
 package simulatoraddition;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -12,7 +13,7 @@ public class Simulator {
 	private int maxServiceTime;
 	private int numCustomers;
 	private double percentSlower;
-	static double noUse = 0;
+	private double noUse;
 
 	public Simulator(int minAT, int maxAT, int minST, int maxST, int cus, int slow) {
 		minArrivalTime = minAT;
@@ -21,6 +22,7 @@ public class Simulator {
 		maxServiceTime = maxST;
 		numCustomers = cus;
 		percentSlower = calculatePercentSlower(slow);
+		noUse = 0.0;
 	}
 
 	public void run() {
@@ -106,7 +108,7 @@ public class Simulator {
 					runFullService(queueA, queueB, queueC, b);
 
 					if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
-						bWait = adjustFullService(bWait, currentTime, b, queueA);
+						bWait = adjustFullService(bWait, b, queueA);
 						waitList.add(bWait);
 						addtoQueue(b, bWait, queueA);
 						System.out.println("Customer " + b.getCustomerId() + " entered Queue A with a wait of " + bWait
@@ -114,7 +116,7 @@ public class Simulator {
 					}
 
 					else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
-						bWait = adjustFullService(bWait, currentTime, b, queueB);
+						bWait = adjustFullService(bWait, b, queueB);
 						waitList.add(bWait);
 						addtoQueue(b, bWait, queueB);
 						System.out.println("Customer " + b.getCustomerId() + " entered Queue B with a wait of " + bWait
@@ -122,7 +124,7 @@ public class Simulator {
 					}
 
 					else {
-						bWait = adjustFullService(bWait, currentTime, b, queueC);
+						bWait = adjustFullService(bWait, b, queueC);
 						waitList.add(bWait);
 						addtoQueue(b, bWait, queueC);
 						System.out.println("Customer " + b.getCustomerId() + " entered Queue C with a wait of " + bWait
@@ -151,9 +153,10 @@ public class Simulator {
 				}
 				a = b;
 			}
+			DecimalFormat df = new DecimalFormat("##.##");
 			System.out.println("\nSimulation Results:");
-			System.out.println("Average full checkout wait: " + waitAvg(waitList, (fullCount + 1)));
-			System.out.println("Average self checkout wait: " + waitAvg(selfWaitList, (selfCount)));
+			System.out.println("Average full checkout wait: " + df.format(waitAvg(waitList, (fullCount + 1))));
+			System.out.println("Average self checkout wait: " + df.format(waitAvg(selfWaitList, (selfCount))));
 
 			System.out.println("Total time checkouts were not in use: " + noUse);
 			waitList.addAll(selfWaitList);
@@ -192,6 +195,7 @@ public class Simulator {
 		double wait = finish - currentTime;
 		if (wait < 0) {
 			wait = (-wait);
+			noUse = noUse + (double) wait;
 			wait = 0;
 			return wait;
 		} else {
@@ -255,24 +259,21 @@ public class Simulator {
 		}
 	}
 
-	public double adjustFullService(double bWait, double currentTime, Customer b, LinkedList<Customer> queue) {
+	public double adjustFullService(double bWait, Customer b, LinkedList<Customer> queue) {
 		if (!queue.isEmpty()) {
-			if (queue.size() > 1) {
-				bWait = getWait(queue.getLast(), currentTime);
-			} else if (queue.size() == 1) {
-				bWait = getWait(queue.getFirst(), currentTime);
-			}
+			bWait = getWait(queue.getLast(), b.getArrivalTime());
+			b.setWait(bWait);
 			double newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
 			b.setFinishTime(newFinishTime);
 			double newServeTime = (b.getArrivalTime() + bWait);
 			b.setServeTime(newServeTime);
 		} else if (queue.isEmpty()) {
-			bWait = 0;
+			bWait = 0.0;
+			b.setWait(bWait);
 			b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
 			double newServeTime = (b.getArrivalTime() + bWait);
 			b.setServeTime(newServeTime);
 		}
-		System.out.println("Wait is " + bWait);
 		return bWait;
 	}
 

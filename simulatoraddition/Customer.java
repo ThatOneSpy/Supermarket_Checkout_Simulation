@@ -103,4 +103,8 @@ public class Customer {
 		return wait;
 	}
 
+	public void setWait(double wait) {
+		this.wait = wait;
+	}
+
 }
