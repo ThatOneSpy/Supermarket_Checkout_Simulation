@@ -24,6 +24,7 @@ public class Simulator {
 	}
 
 	static NoUse nu = new NoUse();
+	static NoUse nu2 = new NoUse();
 
 	public void run() {
 
@@ -89,6 +90,7 @@ public class Simulator {
 			// numCustomers because we have a basis)
 
 			ArrayList<Customer> previous = new ArrayList<>();
+			ArrayList<Customer> selfprevious = new ArrayList<>();
 
 			for (int i = 0; i < numCustomers; i++) {
 
@@ -149,7 +151,13 @@ public class Simulator {
 					bWait = b.getWait();
 
 					if (!selfQueue.isEmpty()) {
-						selfQueue.needToDequeue(b.getArrivalTime());
+						ArrayList<Customer> prev = selfQueue.needToDequeue(b.getArrivalTime());
+						if (!prev.isEmpty()) {
+							for (int r = 0; r < prev.size(); r++) {
+								selfprevious.add(prev.get(r));
+							}
+							calculateSelfNoUse(b, selfprevious);
+						}
 					}
 
 					if (selfQueue.getCapacity() < 2 || selfQueue.isEmpty()) {
@@ -168,7 +176,8 @@ public class Simulator {
 			System.out.println("Average full checkout wait: " + df.format(waitAvg(waitList, (fullCount + 1))));
 			System.out.println("Average self checkout wait: " + df.format(waitAvg(selfWaitList, (selfCount))));
 
-			System.out.println("Total time full checkouts were not in use: " + nu.getNoUse());
+			System.out.println("Total time full checkouts were not in use: " + df.format(nu.getNoUse()));
+			System.out.println("Total time self checkouts were not in use: " + df.format(nu2.getNoUse()));
 			waitList.addAll(selfWaitList);
 			satisfactionCalc(waitList);
 		}
@@ -313,5 +322,18 @@ public class Simulator {
 		nu.setA(a);
 		nu.setB(b);
 		nu.calculate();
+	}
+
+	public void calculateSelfNoUse(Customer b, ArrayList<Customer> prev) {
+		Customer a = prev.get(0);
+		// Figure out the customer who leaves last
+		for (int i = 0; i < prev.size(); i++) {
+			if (prev.get(i).getFinishTime() > a.getFinishTime()) {
+				a = prev.get(i);
+			}
+		}
+		nu2.setA(a);
+		nu2.setB(b);
+		nu2.calculate();
 	}
 }

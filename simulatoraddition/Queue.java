@@ -46,13 +46,17 @@ public class Queue<E> {
 	// Determines who needs to dequeue, returns a list of indexes where the current
 	// customer's arrival time matches or is less than the arrival time of a
 	// customer already in the queue
-	public void needToDequeue(double currentArrival) {
+	public ArrayList<Customer> needToDequeue(double currentArrival) {
 		int size = queueList.size();
 		ArrayList<Customer> customers = queueList.toArrayList();
+		ArrayList<Customer> previous = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			if (customers.get(i).getFinishTime() <= currentArrival)
+			if (customers.get(i).getFinishTime() <= currentArrival) {
+				previous.add(customers.get(i));
 				dequeue(customers.get(i));
+			}
 		}
+		return previous;
 	}
 
 	public Customer peekFirst() throws NoSuchElementException {
