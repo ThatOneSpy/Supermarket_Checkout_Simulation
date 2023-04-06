@@ -168,7 +168,7 @@ public class Simulator {
 			System.out.println("Average full checkout wait: " + df.format(waitAvg(waitList, (fullCount + 1))));
 			System.out.println("Average self checkout wait: " + df.format(waitAvg(selfWaitList, (selfCount))));
 
-			System.out.println("Total time checkouts were not in use: " + nu.getNoUse());
+			System.out.println("Total time full checkouts were not in use: " + nu.getNoUse());
 			waitList.addAll(selfWaitList);
 			satisfactionCalc(waitList);
 		}
