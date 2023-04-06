@@ -18,6 +18,8 @@ public class Customer {
 
 	private double wait;
 
+	private int queue;
+
 	public Customer() // default constructor
 	{
 		arrivalTime = 0;
@@ -105,6 +107,14 @@ public class Customer {
 
 	public void setWait(double wait) {
 		this.wait = wait;
+	}
+
+	public void setQueue(int queue) {
+		this.queue = queue;
+	}
+
+	public int getQueue() {
+		return queue;
 	}
 
 }
