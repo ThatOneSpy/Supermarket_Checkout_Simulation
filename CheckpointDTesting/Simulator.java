@@ -155,7 +155,7 @@ public class Simulator {
 //								+ " minutes.");
 //					}
 
-					// Find the smallest queue
+					// Find the smallest queue..
 					LinkedList<Customer> smallest = full.get(0);
 					int queueName = 0;
 					for (int q = 1; q < full.size() - 1; q++) {
@@ -167,7 +167,7 @@ public class Simulator {
 					bWait = adjustFullService(bWait, b, smallest);
 					waitList.add(bWait);
 					if (!previous.isEmpty()) {
-						calculateNoUse(b, previous, 1);
+						calculateNoUse(b, previous, queueName);
 					}
 					addtoQueue(b, bWait, smallest);
 					System.out.println("Customer " + b.getCustomerId() + " entered Queue " + (queueName + 1)
