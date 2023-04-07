@@ -156,8 +156,6 @@ public class Simulator {
 							if (prev != null) {
 								for (int r = 0; r < prev.size(); r++) {
 									selfprevious.add(prev.get(r));
-									System.out.println("Customer " + prev.get(r).getCustomerId()
-											+ " is being calculated in noUse");
 								}
 								calculateSelfNoUse(b, selfprevious);
 							}
@@ -321,7 +319,6 @@ public class Simulator {
 		nu2.setA(a);
 		nu2.setB(b);
 		nu2.calculate();
-		System.out.println("New NoUse is now: " + nu2.getNoUse());
 	}
 
 	public void suggestions(double wait, double noUse) {
