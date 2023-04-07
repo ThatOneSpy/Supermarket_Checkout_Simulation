@@ -158,10 +158,10 @@ public class Simulator {
 					// Find the smallest queue..
 					LinkedList<Customer> smallest = full.get(0);
 					int queueName = 0;
-					for (int q = 1; q < full.size() - 1; q++) {
-						if (full.get(i).size() < smallest.size()) {
-							smallest = full.get(i);
-							queueName = i;
+					for (int q = 1; q < full.size(); q++) {
+						if (full.get(q).size() < smallest.size()) {
+							smallest = full.get(q);
+							queueName = q;
 						}
 					}
 					bWait = adjustFullService(bWait, b, smallest);
