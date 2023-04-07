@@ -1,4 +1,4 @@
-package CheckpointDTesting;
+package aardvarksCheckpointD;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
