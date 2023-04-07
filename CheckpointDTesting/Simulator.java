@@ -39,9 +39,9 @@ public class Simulator {
 		}
 
 		// Initialize queues
-		LinkedList<Customer> queueA = new LinkedList<>();
-		LinkedList<Customer> queueB = new LinkedList<>();
-		LinkedList<Customer> queueC = new LinkedList<>();
+//		LinkedList<Customer> queueA = new LinkedList<>();
+//		LinkedList<Customer> queueB = new LinkedList<>();
+//		LinkedList<Customer> queueC = new LinkedList<>();
 		Queue<Customer> selfQueue = new Queue<>();
 
 		// ArrayList to keep track of Customer wait times
@@ -83,6 +83,7 @@ public class Simulator {
 			int selfCount = 0;
 			if (chance == 0) {
 				fullCount++;
+				LinkedList<Customer> queueA = full.get(0);
 				queueA.add(a);
 				System.out.println(a.toString());
 				System.out.println("Customer " + a.getCustomerId() + " entered Queue A with a wait of 0 minutes.");
@@ -119,40 +120,40 @@ public class Simulator {
 
 					System.out.println("\nCustomer entering FULL-Checkout");
 
-					runFullService(queueA, queueB, queueC, b, previous);
+					runFullService(full, b, previous);
 
-					if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
-						bWait = adjustFullService(bWait, b, queueA);
-						waitList.add(bWait);
-						if (!previous.isEmpty()) {
-							calculateNoUse(b, previous, 1);
-						}
-						addtoQueue(b, bWait, queueA);
-						System.out.println("Customer " + b.getCustomerId() + " entered Queue A with a wait of " + bWait
-								+ " minutes.");
-					}
-
-					else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
-						bWait = adjustFullService(bWait, b, queueB);
-						waitList.add(bWait);
-						if (!previous.isEmpty()) {
-							calculateNoUse(b, previous, 2);
-						}
-						addtoQueue(b, bWait, queueB);
-						System.out.println("Customer " + b.getCustomerId() + " entered Queue B with a wait of " + bWait
-								+ " minutes.");
-					}
-
-					else {
-						bWait = adjustFullService(bWait, b, queueC);
-						waitList.add(bWait);
-						if (!previous.isEmpty()) {
-							calculateNoUse(b, previous, 3);
-						}
-						addtoQueue(b, bWait, queueC);
-						System.out.println("Customer " + b.getCustomerId() + " entered Queue C with a wait of " + bWait
-								+ " minutes.");
-					}
+//					if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
+//						bWait = adjustFullService(bWait, b, queueA);
+//						waitList.add(bWait);
+//						if (!previous.isEmpty()) {
+//							calculateNoUse(b, previous, 1);
+//						}
+//						addtoQueue(b, bWait, queueA);
+//						System.out.println("Customer " + b.getCustomerId() + " entered Queue A with a wait of " + bWait
+//								+ " minutes.");
+//					}
+//
+//					else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
+//						bWait = adjustFullService(bWait, b, queueB);
+//						waitList.add(bWait);
+//						if (!previous.isEmpty()) {
+//							calculateNoUse(b, previous, 2);
+//						}
+//						addtoQueue(b, bWait, queueB);
+//						System.out.println("Customer " + b.getCustomerId() + " entered Queue B with a wait of " + bWait
+//								+ " minutes.");
+//					}
+//
+//					else {
+//						bWait = adjustFullService(bWait, b, queueC);
+//						waitList.add(bWait);
+//						if (!previous.isEmpty()) {
+//							calculateNoUse(b, previous, 3);
+//						}
+//						addtoQueue(b, bWait, queueC);
+//						System.out.println("Customer " + b.getCustomerId() + " entered Queue C with a wait of " + bWait
+//								+ " minutes.");
+//					}
 				} else {
 					b = create.callNextCustomer(selfQueue);
 					selfCount++;
@@ -267,33 +268,44 @@ public class Simulator {
 
 	}
 
-	public void runFullService(LinkedList<Customer> queueA, LinkedList<Customer> queueB, LinkedList<Customer> queueC,
-			Customer b, ArrayList<Customer> prev) {
-		if (!queueA.isEmpty()) {
-			if (b.getArrivalTime() >= queueA.getFirst().getFinishTime()) {
-				if (queueA.size() == 1) {
-					queueA.getFirst().setQueue(1);
-					prev.add(queueA.getFirst());
+	public void runFullService(ArrayList<LinkedList<Customer>> full, Customer b, ArrayList<Customer> prev) {
+//		if (!queueA.isEmpty()) {
+//			if (b.getArrivalTime() >= queueA.getFirst().getFinishTime()) {
+//				if (queueA.size() == 1) {
+//					queueA.getFirst().setQueue(1);
+//					prev.add(queueA.getFirst());
+//				}
+//				serveCustomer(queueA);
+//			}
+//		}
+//		if (!queueB.isEmpty()) {
+//			if (b.getArrivalTime() >= queueB.getFirst().getFinishTime()) {
+//				if (queueB.size() == 1) {
+//					queueB.getFirst().setQueue(2);
+//					prev.add(queueB.getFirst());
+//				}
+//				serveCustomer(queueB);
+//			}
+//		}
+//		if (!queueC.isEmpty()) {
+//			if (b.getArrivalTime() >= queueC.getFirst().getFinishTime()) {
+//				if (queueC.size() == 1) {
+//					queueC.getFirst().setQueue(3);
+//					prev.add(queueC.getFirst());
+//				}
+//				serveCustomer(queueC);
+//			}
+//		}
+		for (int i = 0; i < full.size(); i++) {
+			LinkedList<Customer> queue = full.get(i);
+			if (!queue.isEmpty()) {
+				if (b.getArrivalTime() >= queue.getFirst().getFinishTime()) {
+					if (queue.size() == 1) {
+						queue.getFirst().setQueue(i);
+						prev.add(queue.getFirst());
+					}
+					serveCustomer(queue);
 				}
-				serveCustomer(queueA);
-			}
-		}
-		if (!queueB.isEmpty()) {
-			if (b.getArrivalTime() >= queueB.getFirst().getFinishTime()) {
-				if (queueB.size() == 1) {
-					queueB.getFirst().setQueue(2);
-					prev.add(queueB.getFirst());
-				}
-				serveCustomer(queueB);
-			}
-		}
-		if (!queueC.isEmpty()) {
-			if (b.getArrivalTime() >= queueC.getFirst().getFinishTime()) {
-				if (queueC.size() == 1) {
-					queueC.getFirst().setQueue(3);
-					prev.add(queueC.getFirst());
-				}
-				serveCustomer(queueC);
 			}
 		}
 	}
