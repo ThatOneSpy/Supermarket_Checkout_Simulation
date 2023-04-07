@@ -86,7 +86,7 @@ public class Simulator {
 				LinkedList<Customer> queueA = full.get(0);
 				queueA.add(a);
 				System.out.println(a.toString());
-				System.out.println("Customer " + a.getCustomerId() + " entered Queue A with a wait of 0 minutes.");
+				System.out.println("Customer " + a.getCustomerId() + " entered Queue 1 with a wait of 0 minutes.");
 			} else if (chance == 1) {
 				selfCount++;
 				selfQueue.enqueue(a);
@@ -154,6 +154,25 @@ public class Simulator {
 //						System.out.println("Customer " + b.getCustomerId() + " entered Queue C with a wait of " + bWait
 //								+ " minutes.");
 //					}
+
+					// Find the smallest queue
+					LinkedList<Customer> smallest = full.get(0);
+					int queueName = 0;
+					for (int q = 1; q < full.size() - 1; q++) {
+						if (full.get(i).size() < smallest.size()) {
+							smallest = full.get(i);
+							queueName = i;
+						}
+					}
+					bWait = adjustFullService(bWait, b, smallest);
+					waitList.add(bWait);
+					if (!previous.isEmpty()) {
+						calculateNoUse(b, previous, 1);
+					}
+					addtoQueue(b, bWait, smallest);
+					System.out.println("Customer " + b.getCustomerId() + " entered Queue " + (queueName + 1)
+							+ " with a wait of " + bWait + " minutes.");
+
 				} else {
 					b = create.callNextCustomer(selfQueue);
 					selfCount++;
