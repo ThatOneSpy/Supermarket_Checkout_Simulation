@@ -11,8 +11,9 @@ public class CustomerCreator {
 	private double currentTime;
 	private Customer previous;
 	private double percentSlow;
+	private int numSelfLanes;
 
-	public CustomerCreator(int minA, int maxA, int minS, int maxS, double time, double percent) {
+	public CustomerCreator(int minA, int maxA, int minS, int maxS, double time, double percent, int self) {
 		minArrive = minA;
 		maxArrive = maxA;
 		minService = minS;
@@ -20,6 +21,7 @@ public class CustomerCreator {
 		currentTime = time;
 		previous = null;
 		percentSlow = percent;
+		numSelfLanes = self;
 	}
 
 	public Customer callFirstCustomer() {
@@ -60,7 +62,7 @@ public class CustomerCreator {
 		// figure out the next two ahead and who has the smallest time
 		ArrayList<Customer> customers = checkout.toArrayList();
 		double finish = 0;
-		if (customers.size() >= 2) {
+		if (customers.size() >= numSelfLanes && numSelfLanes > 1) {
 			double aFinish = customers.get(customers.size() - 1).getFinishTime();
 			double bFinish = customers.get(customers.size() - 2).getFinishTime();
 			if (aFinish < bFinish) {
@@ -73,6 +75,9 @@ public class CustomerCreator {
 				finish = aFinish;
 				checkout.dequeue(customers.get(customers.size() - 2));
 			}
+		} else if (customers.size() >= numSelfLanes && numSelfLanes == 1) {
+			double aFinish = checkout.peekLast().getFinishTime();
+			finish = aFinish;
 		} else {
 			finish = 0;
 		}

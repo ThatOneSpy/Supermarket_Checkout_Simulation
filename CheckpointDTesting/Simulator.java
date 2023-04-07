@@ -38,10 +38,6 @@ public class Simulator {
 			full.add(queue);
 		}
 
-		// Initialize queues
-//		LinkedList<Customer> queueA = new LinkedList<>();
-//		LinkedList<Customer> queueB = new LinkedList<>();
-//		LinkedList<Customer> queueC = new LinkedList<>();
 		Queue<Customer> selfQueue = new Queue<>();
 
 		// ArrayList to keep track of Customer wait times
@@ -54,7 +50,7 @@ public class Simulator {
 		// Need at least one customer for basis
 
 		CustomerCreator create = new CustomerCreator(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime,
-				currentTime, percentSlower);
+				currentTime, percentSlower, numSelfLanes);
 
 		Random random = new Random();
 		int chance = random.nextInt(2);
@@ -105,7 +101,7 @@ public class Simulator {
 
 			for (int i = 0; i < numCustomers; i++) {
 
-				chance = random.nextInt(2);
+				chance = 1;
 				double bWait = 0.0;
 
 				if (chance == 0) {
@@ -121,39 +117,6 @@ public class Simulator {
 					System.out.println("\nCustomer entering FULL-Checkout");
 
 					runFullService(full, b, previous);
-
-//					if ((queueA.size() <= queueB.size() && queueA.size() <= queueC.size())) {
-//						bWait = adjustFullService(bWait, b, queueA);
-//						waitList.add(bWait);
-//						if (!previous.isEmpty()) {
-//							calculateNoUse(b, previous, 1);
-//						}
-//						addtoQueue(b, bWait, queueA);
-//						System.out.println("Customer " + b.getCustomerId() + " entered Queue A with a wait of " + bWait
-//								+ " minutes.");
-//					}
-//
-//					else if ((queueB.size() <= queueA.size() && queueB.size() <= queueC.size())) {
-//						bWait = adjustFullService(bWait, b, queueB);
-//						waitList.add(bWait);
-//						if (!previous.isEmpty()) {
-//							calculateNoUse(b, previous, 2);
-//						}
-//						addtoQueue(b, bWait, queueB);
-//						System.out.println("Customer " + b.getCustomerId() + " entered Queue B with a wait of " + bWait
-//								+ " minutes.");
-//					}
-//
-//					else {
-//						bWait = adjustFullService(bWait, b, queueC);
-//						waitList.add(bWait);
-//						if (!previous.isEmpty()) {
-//							calculateNoUse(b, previous, 3);
-//						}
-//						addtoQueue(b, bWait, queueC);
-//						System.out.println("Customer " + b.getCustomerId() + " entered Queue C with a wait of " + bWait
-//								+ " minutes.");
-//					}
 
 					// Find the smallest queue..
 					LinkedList<Customer> smallest = full.get(0);
@@ -191,7 +154,7 @@ public class Simulator {
 					}
 
 					if (selfQueue.getCapacity() < numSelfLanes || selfQueue.isEmpty()) {
-						bWait = 0;
+						bWait = 0.0;
 						create.resetFinishTime(b, bWait);
 						create.resetServeTime(b, bWait);
 					}
@@ -288,33 +251,6 @@ public class Simulator {
 	}
 
 	public void runFullService(ArrayList<LinkedList<Customer>> full, Customer b, ArrayList<Customer> prev) {
-//		if (!queueA.isEmpty()) {
-//			if (b.getArrivalTime() >= queueA.getFirst().getFinishTime()) {
-//				if (queueA.size() == 1) {
-//					queueA.getFirst().setQueue(1);
-//					prev.add(queueA.getFirst());
-//				}
-//				serveCustomer(queueA);
-//			}
-//		}
-//		if (!queueB.isEmpty()) {
-//			if (b.getArrivalTime() >= queueB.getFirst().getFinishTime()) {
-//				if (queueB.size() == 1) {
-//					queueB.getFirst().setQueue(2);
-//					prev.add(queueB.getFirst());
-//				}
-//				serveCustomer(queueB);
-//			}
-//		}
-//		if (!queueC.isEmpty()) {
-//			if (b.getArrivalTime() >= queueC.getFirst().getFinishTime()) {
-//				if (queueC.size() == 1) {
-//					queueC.getFirst().setQueue(3);
-//					prev.add(queueC.getFirst());
-//				}
-//				serveCustomer(queueC);
-//			}
-//		}
 		for (int i = 0; i < full.size(); i++) {
 			LinkedList<Customer> queue = full.get(i);
 			if (!queue.isEmpty()) {
