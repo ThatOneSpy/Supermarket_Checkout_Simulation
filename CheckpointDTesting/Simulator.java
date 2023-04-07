@@ -101,7 +101,7 @@ public class Simulator {
 
 			for (int i = 0; i < numCustomers; i++) {
 
-				chance = 1;
+				chance = random.nextInt(2);
 				double bWait = 0.0;
 
 				if (chance == 0) {
@@ -143,20 +143,26 @@ public class Simulator {
 					System.out.println("\nCustomer entering SELF-Checkout");
 					bWait = b.getWait();
 
+					ArrayList<Customer> prev = null;
 					if (!selfQueue.isEmpty()) {
-						ArrayList<Customer> prev = selfQueue.needToDequeue(b.getArrivalTime());
-						if (!prev.isEmpty()) {
-							for (int r = 0; r < prev.size(); r++) {
-								selfprevious.add(prev.get(r));
-							}
-							calculateSelfNoUse(b, selfprevious);
-						}
+						prev = selfQueue.needToDequeue(b.getArrivalTime());
 					}
 
 					if (selfQueue.getCapacity() < numSelfLanes || selfQueue.isEmpty()) {
 						bWait = 0.0;
 						create.resetFinishTime(b, bWait);
 						create.resetServeTime(b, bWait);
+						if (selfQueue.isEmpty()) {
+							if (prev != null) {
+								for (int r = 0; r < prev.size(); r++) {
+									selfprevious.add(prev.get(r));
+									System.out.println("Customer " + prev.get(r).getCustomerId()
+											+ " is being calculated in noUse");
+								}
+								calculateSelfNoUse(b, selfprevious);
+							}
+						}
+
 					}
 					selfWaitList.add((bWait));
 					selfQueue.enqueue(b);
@@ -173,6 +179,9 @@ public class Simulator {
 			System.out.println("Total time self checkouts were not in use: " + df.format(nu2.getNoUse()));
 			waitList.addAll(selfWaitList);
 			satisfactionCalc(waitList);
+
+			// Lanes deletion/addition suggestions
+
 		}
 
 	}
@@ -304,7 +313,7 @@ public class Simulator {
 	public void calculateSelfNoUse(Customer b, ArrayList<Customer> prev) {
 		Customer a = prev.get(0);
 		// Figure out the customer who leaves last
-		for (int i = 0; i < prev.size(); i++) {
+		for (int i = 1; i < prev.size(); i++) {
 			if (prev.get(i).getFinishTime() > a.getFinishTime()) {
 				a = prev.get(i);
 			}
@@ -312,5 +321,14 @@ public class Simulator {
 		nu2.setA(a);
 		nu2.setB(b);
 		nu2.calculate();
+		System.out.println("New NoUse is now: " + nu2.getNoUse());
+	}
+
+	public void suggestions(double wait, double noUse) {
+		if (wait > noUse) {
+			System.out.println("Consider adding one or more lanes in your next simulation.");
+		} else if (noUse > wait) {
+			System.out.println("Consider deleting one or more lanes in your next simulation.");
+		}
 	}
 }
