@@ -1,0 +1,375 @@
+package aardvarksCheckpointETest;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Random;
+
+public class Simulator {
+
+	private int minArrivalTime;
+	private int maxArrivalTime;
+	private int minServiceTime;
+	private int maxServiceTime;
+	private int numCustomers;
+	private double percentSlower;
+	private int numFullLanes;
+	private int numSelfLanes;
+
+	public Simulator(int minAT, int maxAT, int minST, int maxST, int cus, int slow, int full, int self) {
+		minArrivalTime = minAT;
+		maxArrivalTime = maxAT;
+		minServiceTime = minST;
+		maxServiceTime = maxST;
+		numCustomers = cus;
+		percentSlower = calculatePercentSlower(slow);
+		numFullLanes = full;
+		numSelfLanes = self;
+	}
+
+	static NoUse nu = new NoUse();
+	static NoUse nu2 = new NoUse();
+
+	public void run() {
+
+		ArrayList<LinkedList<Customer>> full = new ArrayList<>();
+		for (int index = 0; index < numFullLanes; index++) {
+			LinkedList<Customer> queue = new LinkedList<>();
+			full.add(queue);
+		}
+
+		Queue<Customer> selfQueue = new Queue<>();
+
+		// ArrayList to keep track of Customer wait times
+		ArrayList<Double> waitList = new ArrayList<>();
+		ArrayList<Double> selfWaitList = new ArrayList<>();
+
+		// Clock variable to determine arrival time for Customer constructor
+		double currentTime = 0.0;
+
+		// Need at least one customer for basis
+
+		CustomerCreator create = new CustomerCreator(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime,
+				currentTime, percentSlower, numSelfLanes);
+
+		Random random = new Random();
+		int chance = random.nextInt(2);
+		Customer a = null;
+
+		if (chance == 0) {
+			System.out.println("\nCustomer entering FULL-Checkout");
+			create.setPercentSlow(1.0);
+			a = create.callFirstCustomer();
+			supermarketDB.addCustomers(a);
+		} else if (chance == 1) {
+			System.out.println("\nCustomer entering SELF-Checkout");
+			a = create.callFirstCustomer();
+			supermarketDB.addCustomers(a);
+		}
+
+		numCustomers--;
+
+		if (numCustomers == 0) {
+			currentTime = a.getFinishTime();
+			System.out.println(a.toString());
+			System.out.println("Average wait: 0");
+			System.out.println("Total time checkouts were not in use: 0 minutes");
+			System.out.println("Customer satisfaction: 1 satisfied (<5 minutes)  0 dissatisfied (>=5 minutes)");
+
+		} else {
+			int fullCount = 0;
+			int selfCount = 0;
+			if (chance == 0) {
+				fullCount++;
+				LinkedList<Customer> queueA = full.get(0);
+				queueA.add(a);
+				System.out.println(a.toString());
+				System.out.println("Customer " + a.getCustomerId() + " entered Queue 1 with a wait of 0 minutes.");
+			} else if (chance == 1) {
+				selfCount++;
+				selfQueue.enqueue(a);
+				System.out.println(a.toString());
+				System.out
+						.println("Customer " + a.getCustomerId() + " entered self-checkout with a wait of 0 minutes.");
+			}
+			waitList.add(0.0);
+			create.setPrevious(a);
+			Customer b;
+			// Use a for loop to go through all customers (make sure to subtract one from
+			// numCustomers because we have a basis)
+
+			ArrayList<Customer> previous = new ArrayList<>();
+			ArrayList<Customer> selfprevious = new ArrayList<>();
+
+			for (int i = 0; i < numCustomers; i++) {
+
+				chance = random.nextInt(2);
+				double bWait = 0.0;
+
+				if (chance == 0) {
+
+					int bAT = genArrivalTime(minArrivalTime, maxArrivalTime);
+					int bST = genServiceTime(minServiceTime, maxServiceTime);
+					currentTime = currentTime + bAT;
+					b = create.callNextCustomerFull(bAT, bST, a);
+					supermarketDB.addCustomers(b);
+
+					fullCount++;
+					create.setPercentSlow(1.0);
+
+					System.out.println("\nCustomer entering FULL-Checkout");
+
+					runFullService(full, b, previous);
+
+					// Find the smallest queue..
+					LinkedList<Customer> smallest = full.get(0);
+					int queueName = 0;
+					for (int q = 1; q < full.size(); q++) {
+						if (full.get(q).size() < smallest.size()) {
+							smallest = full.get(q);
+							queueName = q;
+						}
+					}
+					bWait = adjustFullService(bWait, b, smallest);
+					waitList.add(bWait);
+					if (!previous.isEmpty()) {
+						calculateNoUse(b, previous, queueName);
+					}
+					addtoQueue(b, bWait, smallest);
+					System.out.println("Customer " + b.getCustomerId() + " entered Queue " + (queueName + 1)
+							+ " with a wait of " + bWait + " minutes.");
+
+				} else {
+					b = create.callNextCustomer(selfQueue);
+					supermarketDB.addCustomers(b);
+					selfCount++;
+					create.setPercentSlow(percentSlower);
+					System.out.println("\nCustomer entering SELF-Checkout");
+					bWait = b.getWait();
+
+					ArrayList<Customer> prev = null;
+					if (!selfQueue.isEmpty()) {
+						prev = selfQueue.needToDequeue(b.getArrivalTime());
+					}
+
+					if (selfQueue.getCapacity() < numSelfLanes || selfQueue.isEmpty()) {
+						bWait = 0.0;
+						create.resetFinishTime(b, bWait);
+						create.resetServeTime(b, bWait);
+						if (selfQueue.isEmpty()) {
+							if (prev != null) {
+								for (int r = 0; r < prev.size(); r++) {
+									selfprevious.add(prev.get(r));
+								}
+								calculateSelfNoUse(b, selfprevious);
+							}
+						}
+
+					}
+					selfWaitList.add((bWait));
+					selfQueue.enqueue(b);
+					System.out.println(b.toString());
+				}
+				a = b;
+			}
+			DecimalFormat df = new DecimalFormat("##.##");
+			double fullWait = waitAvg(waitList, (fullCount + 1));
+			double selfWait = waitAvg(selfWaitList, selfCount);
+			double fullNoUse = nu.getNoUse();
+			double selfNoUse = nu2.getNoUse();
+			
+			System.out.println("\nSimulation Results:");
+			System.out.println("Average full checkout wait: " + df.format(fullWait));
+			System.out.println("Average self checkout wait: " + df.format(selfWait));
+
+			System.out.println("Total time full checkouts were not in use: " + fullNoUse);
+			System.out.println("Total time self checkouts were not in use: " + selfNoUse);
+			
+			waitList.addAll(selfWaitList);
+			ArrayList<Integer> satResults = satisfactionCalc(waitList);
+
+			
+			int satisfied = satResults.get(0);
+			int dissatisfied = satResults.get(1);
+			
+			supermarketDB.addResults(fullWait, selfWait, fullNoUse, selfNoUse, satisfied, dissatisfied);
+			
+			System.out.println();
+
+			// Lanes deletion/addition suggestions
+			System.out.println("For full service checkouts,");
+			suggestions(fullWait, nu.getNoUse());
+			System.out.println("For self service checkouts,");
+			suggestions(selfWait, nu2.getNoUse());
+			System.out.println();
+
+		}
+
+	}
+
+	public double calculatePercentSlower(int givenPercent) {
+		double newPercent = (double) givenPercent / 100;
+		return newPercent;
+	}
+
+	// Generates an arrival time given the two range parameters determined by user
+	public int genArrivalTime(int min, int max) {
+		int r = (int) (Math.random() * (max - min)) + min;
+		return r;
+	}
+
+	// Generates a service time given the two range parameters determined by user
+	public int genServiceTime(int min, int max) {
+		int r = (int) (Math.random() * (max - min)) + min;
+		return r;
+	}
+
+	public double genServiceTimeWithPercent(int min, int max, double percent) {
+		double r = (int) (Math.random() * (max - min)) + min;
+		double newSer = (r * percent) + r;
+		return newSer;
+	}
+
+	// Generates the wait time of a single customer given that there has been at
+	// least one customer served before them....
+	public double getWait(Customer a, double currentTime) {
+		int finish = (int) a.getFinishTime();
+		double wait = finish - currentTime;
+		if (wait < 0) {
+			wait = 0;
+			return wait;
+		} else {
+			return wait;
+		}
+	}
+
+	public double waitAvg(ArrayList<Double> waitList, int numCustomers) {
+		double sum = 0;
+		for (int i = 0; i < waitList.size(); i++) {
+			sum = sum + waitList.get(i);
+
+		}
+		double avg = (sum / (double) numCustomers);
+
+		return avg;
+
+	}
+
+	public void serveCustomer(LinkedList<Customer> queue) {
+		Customer c = queue.getFirst();
+		queue.remove(c);
+	}
+
+	public ArrayList<Integer> satisfactionCalc(ArrayList<Double> waitList) {
+		int satisfied = 0;
+		int dissatisfied = 0;
+		ArrayList<Integer> results = new ArrayList<Integer>();
+
+		for (int i = 0; i < waitList.size(); i++) {
+
+			if (waitList.get(i) >= 5) {
+				dissatisfied++;
+			}
+
+			else {
+				satisfied++;
+			}
+		}
+
+		System.out.println("Customer satisfaction: " + satisfied + " satisfied (<5 minutes)  " + dissatisfied
+				+ " dissatisfied (>=5 minutes)");
+
+		results.add(satisfied);
+		results.add(dissatisfied);
+		
+		return results;
+		
+		
+
+	}
+
+	public void runFullService(ArrayList<LinkedList<Customer>> full, Customer b, ArrayList<Customer> prev) {
+		for (int i = 0; i < full.size(); i++) {
+			LinkedList<Customer> queue = full.get(i);
+			if (!queue.isEmpty()) {
+				if (b.getArrivalTime() >= queue.getFirst().getFinishTime()) {
+					if (queue.size() == 1) {
+						queue.getFirst().setQueue(i);
+						prev.add(queue.getFirst());
+					}
+					serveCustomer(queue);
+				}
+			}
+		}
+	}
+
+	public double adjustFullService(double bWait, Customer b, LinkedList<Customer> queue) {
+		if (!queue.isEmpty()) {
+			bWait = getWait(queue.getLast(), b.getArrivalTime());
+			b.setWait(bWait);
+			double newFinishTime = (b.getArrivalTime() + b.getServiceTime() + bWait);
+			b.setFinishTime(newFinishTime);
+			double newServeTime = (b.getArrivalTime() + bWait);
+			b.setServeTime(newServeTime);
+		} else if (queue.isEmpty()) {
+			bWait = 0.0;
+			b.setWait(bWait);
+			b.setFinishTime(b.getArrivalTime() + b.getServiceTime());
+			double newServeTime = (b.getArrivalTime() + bWait);
+			b.setServeTime(newServeTime);
+		}
+		return bWait;
+	}
+
+	public void addtoQueue(Customer b, double bWait, LinkedList<Customer> queue) {
+		queue.add(b);
+		System.out.println(b.toString());
+	}
+
+	public void calculateNoUse(Customer b, ArrayList<Customer> prev, int queue) {
+		Customer a = null;
+		for (int i = 0; i < prev.size(); i++) {
+			if (prev.get(i).getQueue() == queue) {
+				a = prev.get(i);
+				prev.remove(i);
+			}
+		}
+		nu.setA(a);
+		nu.setB(b);
+		nu.calculate();
+	}
+
+	public void calculateSelfNoUse(Customer b, ArrayList<Customer> prev) {
+		Customer a = prev.get(0);
+		// Figure out the customer who leaves last
+		for (int i = 1; i < prev.size(); i++) {
+			if (prev.get(i).getFinishTime() > a.getFinishTime()) {
+				a = prev.get(i);
+			}
+		}
+		nu2.setA(a);
+		nu2.setB(b);
+		nu2.calculate();
+	}
+
+	public void suggestions(double wait, double noUse) {
+		if (noUse == 0) {
+			if (wait > 2.8) {
+				System.out.println(
+						"Consider adding one or more lanes in your next simulation to reduce the wait for happier customers.");
+			} else {
+				System.out.println("Optimal amount of lanes present. No changes necessary.");
+			}
+		} else {
+			if (wait < noUse) {
+				System.out.println(
+						"Consider deleting one or more lanes in your next simulation to minimize the time of the checkout(s) not being used.");
+			} else if (wait > noUse) {
+				System.out.println(
+						"Consider adding one or more lanes in your next simulation to reduce the wait for happier customers.");
+			} else {
+				System.out.println("Optimal amount of lanes present. No changes necessary.");
+			}
+		}
+	}
+}
