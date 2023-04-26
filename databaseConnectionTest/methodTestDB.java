@@ -1,6 +1,9 @@
-package aardvarksCheckpointETest;
+package databaseConnectionTest;
 
 import java.util.Scanner;
+
+import aardvarksCheckpointETest.Customer;
+import aardvarksCheckpointETest.supermarketDB;
 
 public class methodTestDB {
 

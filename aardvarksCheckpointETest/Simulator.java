@@ -182,8 +182,8 @@ public class Simulator {
 			System.out.println("Average full checkout wait: " + df.format(fullWait));
 			System.out.println("Average self checkout wait: " + df.format(selfWait));
 
-			System.out.println("Total time full checkouts were not in use: " + fullNoUse);
-			System.out.println("Total time self checkouts were not in use: " + selfNoUse);
+			System.out.println("Total time full checkouts were not in use: " + df.format(fullNoUse));
+			System.out.println("Total time self checkouts were not in use: " + df.format(selfNoUse));
 			
 			waitList.addAll(selfWaitList);
 			ArrayList<Integer> satResults = satisfactionCalc(waitList);
