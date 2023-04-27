@@ -105,7 +105,7 @@ public class supermarketDB {
 		
 		String queryAdd = "INSERT INTO customer (custID, arrivalTime, serviceTime, finishTime, serveTime, wait) VALUES "
 				+ "('" + cust.getCustomerId() + "'," + cust.getArrivalTime() + "," + cust.getServiceTime() + ","
-				+ cust.getFinishTime() + "," + df.format(cust.getServeTime()) + "," + df.format(cust.getWait()) + ")";
+				+ df.format(cust.getFinishTime()) + "," + df.format(cust.getServeTime()) + "," + df.format(cust.getWait()) + ")";
 
 		System.out.println("Customer added to database");
 
