@@ -1,4 +1,4 @@
-package aardvarksCheckpointETest;
+package aardvarksCheckpointE;
 
 import java.text.DecimalFormat;
 

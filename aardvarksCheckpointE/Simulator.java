@@ -1,4 +1,4 @@
-package aardvarksCheckpointETest;
+package aardvarksCheckpointE;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -60,11 +60,11 @@ public class Simulator {
 			System.out.println("\nCustomer entering FULL-Checkout");
 			create.setPercentSlow(1.0);
 			a = create.callFirstCustomer();
-			supermarketDB.addCustomers(a);
+			SupermarketDB.addCustomers(a);
 		} else if (chance == 1) {
 			System.out.println("\nCustomer entering SELF-Checkout");
 			a = create.callFirstCustomer();
-			supermarketDB.addCustomers(a);
+			SupermarketDB.addCustomers(a);
 		}
 
 		numCustomers--;
@@ -112,7 +112,7 @@ public class Simulator {
 					int bST = genServiceTime(minServiceTime, maxServiceTime);
 					currentTime = currentTime + bAT;
 					b = create.callNextCustomerFull(bAT, bST, a);
-					supermarketDB.addCustomers(b);
+					SupermarketDB.addCustomers(b);
 
 					fullCount++;
 					create.setPercentSlow(1.0);
@@ -141,7 +141,7 @@ public class Simulator {
 
 				} else {
 					b = create.callNextCustomer(selfQueue);
-					supermarketDB.addCustomers(b);
+					SupermarketDB.addCustomers(b);
 					selfCount++;
 					create.setPercentSlow(percentSlower);
 					System.out.println("\nCustomer entering SELF-Checkout");
@@ -192,7 +192,7 @@ public class Simulator {
 			int satisfied = satResults.get(0);
 			int dissatisfied = satResults.get(1);
 			
-			supermarketDB.addResults(fullWait, selfWait, fullNoUse, selfNoUse, satisfied, dissatisfied);
+			SupermarketDB.addResults(fullWait, selfWait, fullNoUse, selfNoUse, satisfied, dissatisfied);
 			
 			System.out.println();
 

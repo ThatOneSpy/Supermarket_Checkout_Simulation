@@ -1,4 +1,4 @@
-package aardvarksCheckpointETest;
+package aardvarksCheckpointE;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 
-public class supermarketDB {
+public class SupermarketDB {
 	
 	public static final DecimalFormat df = new DecimalFormat( "#.#" );
 	static Connection conn = null;

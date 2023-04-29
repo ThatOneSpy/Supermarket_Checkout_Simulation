@@ -1,4 +1,4 @@
-package aardvarksCheckpointETest;
+package aardvarksCheckpointE;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -65,7 +65,7 @@ public class JavaMarketDriver {
 		}
 
 		System.out.println();
-		supermarketDB.addTestData(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime, numCustomers,
+		SupermarketDB.addTestData(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime, numCustomers,
 				percentSlower, numFullLanes, numSelfLanes);
 		Simulator simulate = new Simulator(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime, numCustomers,
 				percentSlower, numFullLanes, numSelfLanes);

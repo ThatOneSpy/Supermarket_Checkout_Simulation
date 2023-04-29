@@ -2,8 +2,8 @@ package databaseConnectionTest;
 
 import java.util.Scanner;
 
-import aardvarksCheckpointETest.Customer;
-import aardvarksCheckpointETest.supermarketDB;
+import aardvarksCheckpointE.Customer;
+import aardvarksCheckpointE.SupermarketDB;
 
 public class methodTestDB {
 
@@ -33,20 +33,20 @@ public class methodTestDB {
 			choice = menu();
 			
 			if (choice == 1)
-				supermarketDB.printCustomers();
+				SupermarketDB.printCustomers();
 			
 			else if (choice == 2)
-				supermarketDB.addCustomers(testCust);
+				SupermarketDB.addCustomers(testCust);
 			
 			else if (choice == 3)
-				supermarketDB.addTestData(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime, numCustomers,
+				SupermarketDB.addTestData(minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime, numCustomers,
 						percentSlower, numFullLanes, numSelfLanes);
 			
 			else if (choice == 4)
-				supermarketDB.addResults(fullWait, selfWait, fullNoUse, selfNoUse, satisfied, dissatisfied);
+				SupermarketDB.addResults(fullWait, selfWait, fullNoUse, selfNoUse, satisfied, dissatisfied);
 
 			else if (choice == 10) {
-				supermarketDB.closeConnection();
+				SupermarketDB.closeConnection();
 				System.exit(0);
 			}
 		}

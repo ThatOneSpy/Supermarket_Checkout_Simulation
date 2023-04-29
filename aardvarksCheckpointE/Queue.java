@@ -1,4 +1,4 @@
-package aardvarksCheckpointETest;
+package aardvarksCheckpointE;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
