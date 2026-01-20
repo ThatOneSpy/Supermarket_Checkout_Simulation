@@ -1,4 +1,4 @@
-#Supermarket Checkout Line Simulator
+# Supermarket Checkout Line Simulator
 
 Purpose: Models full-service and self-checkout lanes to compare wait times, idle time, and customer satisfaction across different lane configurations and arrival/service-time assumptions.
 
