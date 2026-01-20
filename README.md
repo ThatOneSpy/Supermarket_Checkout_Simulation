@@ -10,6 +10,6 @@ Outputs: Average wait per lane type, total idle time per lane type, and a satisf
 
 Data structures: Custom Queue and LinkedList for customer ordering; Customer and CustomerCreator encapsulate timing attributes and random generation helpers; Simulator drives the per-tick event logic; JavaMarketDriver handles user input/validation and kicks off runs.
 
-Database option (Checkpoint E): Optional MySQL/phpMyAdmin logging via SupermarketDB writes input parameters, generated customers, and simulation results (timestamped) to three tables. Requires importing supermarket.sql, creating DBUser with the specified credentials, and adding the MySQL JDBC driver to the classpath.
+Database: Optional MySQL/phpMyAdmin logging via SupermarketDB writes input parameters, generated customers, and simulation results (timestamped) to three tables. Requires importing supermarket.sql, creating DBUser with the specified credentials, and adding the MySQL JDBC driver to the classpath.
 
 Typical use: Enter recommended ranges (e.g., interarrival 2–5, service 2–5, ~100 customers, ~20% self-checkout slowdown, lanes scaled to demand), run, then adjust lane counts per the simulator’s suggestions to minimize wait and idle time.
